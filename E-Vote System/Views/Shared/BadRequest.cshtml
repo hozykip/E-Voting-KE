@@ -1,0 +1,8 @@
+﻿<h1 class="text-danger">Error!</h1>
+
+<p>@Configs.DefaultErrorMessage</p>
+<br />
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.ErrorMessage)) { 
+    <p class="text-info">@ViewBag.ErrorMessage</p>
+}

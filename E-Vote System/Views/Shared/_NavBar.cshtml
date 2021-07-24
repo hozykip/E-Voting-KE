@@ -1,0 +1,168 @@
+﻿
+@using Microsoft.AspNet.Identity
+@using E_Vote_System.Models
+
+
+@{
+    ApplicationUser user = ViewBag.user as ApplicationUser;
+}
+
+<nav class="navbar header-navbar pcoded-header">
+    <div class="navbar-wrapper">
+        <div class="navbar-logo">
+            <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
+                <i class="ti-menu"></i>
+            </a>
+            <div class="mobile-search waves-effect waves-light">
+                <div class="header-search">
+                    <div class="main-search morphsearch-search">
+                        <div class="input-group">
+                            <span class="input-group-prepend search-close"><i class="ti-close input-group-text"></i></span>
+                            <input type="text" class="form-control" placeholder="Enter Keyword">
+                            <span class="input-group-append search-btn"><i class="ti-search input-group-text"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="index.html">
+                <img class="img-fluid" src="/Content/imgs/logo.png" alt="Theme-Logo" />
+            </a>
+            <a class="mobile-options waves-effect waves-light">
+                <i class="ti-more"></i>
+            </a>
+        </div>
+        <div class="navbar-container container-fluid">
+            <ul class="nav-left">
+                <li>
+                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                </li>
+                <li>
+                    <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
+                        <i class="ti-fullscreen"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav-right">
+                @*<li class="header-notification">
+                        <a href="#!" class="waves-effect waves-light">
+                            <i class="ti-bell"></i>
+                            <span class="badge bg-c-red"></span>
+                        </a>
+                        <ul class="show-notification">
+                            <li>
+                                <h6>Notifications</h6>
+                                <label class="label label-danger">New</label>
+                            </li>
+                            <li class="waves-effect waves-light">
+                                <div class="media">
+                                    <img class="d-flex align-self-center img-radius" src="/Content/Materialable/assets/images/avatar-2.jpg" alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <h5 class="notification-user">@(Request.IsAuthenticated ? User.Identity.GetUserName() : "")</h5>
+                                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                        <span class="notification-time">30 minutes ago</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="waves-effect waves-light">
+                                <div class="media">
+                                    <img class="d-flex align-self-center img-radius" src="/Content/Materialable/assets/images/avatar-4.jpg" alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <h5 class="notification-user">Joseph William</h5>
+                                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                        <span class="notification-time">30 minutes ago</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="waves-effect waves-light">
+                                <div class="media">
+                                    <img class="d-flex align-self-center img-radius" src="/Content/Materialable/assets/images/avatar-3.jpg" alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <h5 class="notification-user">Sara Soudein</h5>
+                                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                        <span class="notification-time">30 minutes ago</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>*@
+                <li class="user-profile header-notification">
+                    <a href="#!" class="waves-effect waves-light">
+
+
+                        @if (user == null)
+                        {
+                            <img src="/Content/Materialable/assets/images/avatar-4.jpg" class="img-radius profile" alt="User-Profile-Image">
+                        }
+                        else
+                        {
+                            string fileName = user.ProfilePicture;
+                            string profilePath = $"{Configs.ProfilePath}{fileName}";
+                            string profileUrl = $"{Configs.ProfileUrl}{fileName}";
+
+
+                            if (string.IsNullOrWhiteSpace(fileName) || !System.IO.File.Exists(profilePath))
+                            {
+                                <img src="/Content/Materialable/assets/images/avatar-4.jpg" class="img-radius profile" alt="User-Profile-Image">
+                            }
+                            else
+                            {
+                                <img src="@profileUrl" class="img-radius profile" alt="User-Profile-Image">
+                            }
+                        }
+
+
+
+                        <span>@(Model != null ? Model.Name : "")</span>
+                        <i class="ti-angle-down"></i>
+                    </a>
+                    <ul class="show-notification profile-notification">
+
+                        @*<li class="waves-effect waves-light">
+                                <a href="#!">
+                                    <i class="ti-settings"></i> Settings
+                                </a>
+                            </li>
+
+                            <li class="waves-effect waves-light">
+                                <a href="email-inbox.html">
+                                    <i class="ti-email"></i> My Messages
+                                </a>
+                            </li>
+                            <li class="waves-effect waves-light">
+                                <a href="auth-lock-screen.html">
+                                    <i class="ti-lock"></i> Lock Screen
+                                </a>
+                            </li>*@
+                        @if (Request.IsAuthenticated)
+                        {
+
+                            <li class="waves-effect waves-light">
+                                <a href="@Url.Action("Profile","Account")">
+                                    <i class="ti-user"></i> Profile
+                                </a>
+                            </li>
+
+                            <li class="waves-effect waves-light">
+                                @*<a href="auth-normal-sign-in.html">
+                                        <i class="ti-layout-sidebar-left"></i> Logout
+                                    </a>*@
+                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="ti-layout-sidebar-left"></i> Logout</a>
+                            </li>
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @*<ul class="nav navbar-nav navbar-right">
+                                        <li>
+                                            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                        </li>
+                                        <li></li>
+                                    </ul>*@
+                            }
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

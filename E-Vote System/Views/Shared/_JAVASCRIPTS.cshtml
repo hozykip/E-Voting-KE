@@ -1,0 +1,121 @@
+﻿<!-- Required Jquery -->
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+
+
+
+<script type="text/javascript" src="/Content/Materialable/assets/js/jquery-ui/jquery-ui.min.js "></script>
+<script type="text/javascript" src="/Content/Materialable/assets/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/Content/Materialable/assets/js/bootstrap/js/bootstrap.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/smartwizard@5/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
+
+<script src="~/Content/Fancybox/fancybox.umd.js"></script>
+
+<!--<script src="~/Content/datatable/jquery.dataTables.min.js"></script>
+<script src="~/Content/datatable/dataTables.buttons.min.js"></script>
+<script src="~/Content/datatable/jszip.min.js"></script>
+<script src="~/Content/datatable/pdfmake.min.js"></script>
+<script src="~/Content/datatable/vfs_fonts.js"></script>
+<script src="~/Content/datatable/buttons.html5.min.js"></script>
+<script src="~/Content/datatable/buttons.print.min.js"></script>-->
+
+<script src="~/Content/datatable/jquery.dataTables.min.js"></script>
+<script src="~/Content/datatable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Content/datatable/dataTables.buttons.min.js"></script>
+<script src="~/Content/datatable/buttons.bootstrap4.min.js"></script>
+<script src="~/Content/datatable/jszip.min.js"></script>
+<script src="~/Content/datatable/pdfmake.min.js"></script>
+<script src="~/Content/datatable/vfs_fonts.js"></script>
+<script src="~/Content/datatable/buttons.html5.min.js"></script>
+<script src="~/Content/datatable/buttons.print.min.js"></script>
+<script src="~/Content/datatable/buttons.colVis.min.js"></script>
+
+<!-- waves js -->
+<script src="/Content/Materialable/assets/pages/waves/js/waves.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/Content/Materialable/assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+<!-- slimscroll js -->
+<script src="/Content/Materialable/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+
+<script src="~/Scripts/toastr.min.js"></script>
+
+<!-- menu js -->
+<script src="/Content/Materialable/assets/js/pcoded.min.js"></script>
+<script src="/Content/Materialable/assets/js/vertical/vertical-layout.min.js "></script>
+
+<script type="text/javascript" src="/Content/Materialable/assets/js/script.js"></script>
+
+<script src="~/Scripts/custom/smart-wizard.js"></script>
+
+<script src="~/Scripts/ToastrOptions.js"></script>
+
+<script src="~/Scripts/custom/App.js"></script>
+
+<script>
+
+
+
+        $(document).ready(function () {
+
+
+            // SmartWizard initialize
+            //$('.smartwizard').smartWizard({
+            //    theme: "dots",
+            //    loader: 'show',
+            //    toolbarSettings: {
+            //        toolbarExtraButtons: [
+            //            $('<button></button>').text('Submit')
+            //                //.attr("type", "button")
+            //                .css("background-color", "#ff5252")
+            //                .css("border-color", "#ff5252")
+            //                //.css("display", "none")
+            //                .addClass('btn btn-danger smartwizard_finish sw-btn-group-extra')
+            //                .on('click', function () {
+            //                    //alert('Finish button click');
+            //                })
+            //        ]
+            //    },
+            //    anchorClickable: false
+            //});
+
+            //$(".smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
+
+
+            //     if ($('button.sw-btn-next').hasClass('disabled')) {
+            //        $('.sw-btn-group-extra').show(); // show the button extra only in the last page
+            //    } else {
+            //        $('.sw-btn-group-extra').hide();
+            //    }
+
+            //});
+
+
+
+
+        });
+
+
+
+
+        var toastrmsg = '';
+        @*if ('@ViewBag.Message' != null && '@ViewBag.Message' != '') {
+            toastrmsg = '@ViewBag.Message';
+        }*@
+
+
+        if ('@(TempData["Message"])' != null && '@(TempData["Message"])' != '') {
+            toastrmsg = '@(TempData["Message"])';
+
+        }
+        if (toastrmsg != null && toastrmsg != '') {
+
+
+
+            toastrAlert(toastrmsg);
+        }
+
+
+
+
+</script>

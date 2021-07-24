@@ -1,0 +1,85 @@
+﻿
+/*.form-material .form-group.form-static-label .form-control ~ .float-label {
+    top: -14px;
+    font-size: 11px;
+}
+*/
+
+.lazy_loaded > .load_img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .lazy_loaded > .load_img > img {
+        height: 50px;
+        margin-right: 2px;
+    }
+
+
+
+.loading_content {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.76);
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+    .loading_content.no-js {
+        display: none;
+    }
+
+    .loading_content .loader {
+        background-color: transparent;
+        border-top-color: green;
+        width: 222px;
+        height: 45px;
+        background-position: center;
+        background-size: cover;
+        color: #101010;
+        padding: 10px 10px;
+        background-color: white;
+        border: solid 2px #a29696;
+        display: flex;
+        align-items: center;
+    }
+
+        .loading_content .loader img {
+            height: 50px;
+            margin-right: 2px;
+        }
+
+        .loading_content .loader p {
+            /*font-weight: 800;*/
+            font-size: 14px;
+            margin: 0;
+        }
+
+
+
+.mat-clr-stat-card.yellow {
+    background-color: #b7ad61;
+}
+.mat-clr-stat-card.pink {
+    background-color: #ffa0b1;
+}
+
+.pink-dark-bg {
+    background-color: #ff6d87;
+}
+
+.mat-clr-stat-card.indigo {
+    background-color: #4b008280;
+}
+
+.indigo-dark-bg {
+    background-color: #4b0082;
+}

@@ -1,0 +1,102 @@
+﻿@section Styles{
+
+    <style>
+
+        .top_banner {
+            background-image: url('../../Content/imgs/breadcrumb-bg.jpg');
+            background-size: cover;
+            height: 150px;
+            position: relative;
+        }
+        
+        .top_banner::before {
+            content: "";
+            height: 100%;
+            width: 100%;
+            background-color: rgb(255 216 0 / 0.62);
+            position: absolute;
+            top:0;
+            left: 0;
+        }
+
+            .top_banner img {
+                position: absolute;
+                width: 120px;
+                border: solid 5px #eff5f7;
+                outline: beige;
+                bottom: -40%;
+                left: 3%;
+            }
+
+        .personal-info img.profile {
+            position: absolute;
+            top: -100%;
+            width: 120px;
+            border: solid 5px #eff5f7;
+            outline: beige;
+        }
+
+        .edit_btn{
+            position: absolute;
+            top: -0%;
+            color: #fff;
+            padding: 8px 12px;
+            background-color: #ff6a00;
+            cursor: pointer;
+        }
+
+    </style>
+
+}
+
+
+<div class="row">
+
+    @*Personal Info & Company Details*@
+    <div class="col-md-9 col-sm-12">
+        <div class="card bg-white">
+            <div class="top_banner rounded-top rounded-lg">
+                @*<img src="~/Content/imgs/avatar-2.jpg" class="img-radius " />*@
+            </div>
+
+            <div class="card-body">
+                <div class="row personal-info pb-3 lazy_loaded" data-url="@Url.Action("ProfileDetails", "Profile", new { page="profile"})">
+                    
+                </div>
+                
+                <div class="row mt-3 mx-1">
+                    
+                    <div class="col-12">
+                        <div class="lazy_loaded" data-url="@Url.Action("SupplyInfo", "Home")">
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    @*Contact info & Address*@
+<div class="col-md-3 col-sm-12">
+    <div class="card p-4 ">
+        <h5 class="mb-4">Company Address</h5>
+
+    <div class="lazy_loaded" data-url="@Url.Action("CompanyAddress", "Profile")"></div>
+
+    </div>
+
+
+
+    <div class="card p-4">
+        <h5 class="mb-4">Bank Details</h5>
+
+        <div class="lazy_loaded" data-url="@Url.Action("BankDetails", "Profile")"></div>
+
+        
+    </div>
+</div>
+
+</div>

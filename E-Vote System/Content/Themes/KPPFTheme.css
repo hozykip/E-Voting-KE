@@ -1,0 +1,60 @@
+﻿/*primary: #DCAB27*/
+/*secondary: #0F8D46*/
+/*secondary2: #033579*/
+
+:root {
+    --primary-theme: #DCAB27;
+    --primary-theme-faded: rgb(220 171 39 / 0.55);
+    --secondary-theme: #0F8D46;
+    --secondary-theme-faded: #0F8D46a3;
+    --secondary2-theme: #033579;
+    --secondary2-theme-faded: rgb(3 53 121 / 0.82);
+}
+
+.pcoded .pcoded-header[header-theme="theme1"] {
+    background: var(--primary-theme);
+}
+
+
+.pcoded[fream-type="theme1"] .page-header:before {
+    background: var(--primary-theme-faded);
+}
+
+body[themebg-pattern="theme1"] {
+    background-color: var(--primary-theme);
+}
+
+.pcoded[fream-type="theme1"] .main-menu .main-menu-header:before,
+.pcoded[fream-type="theme1"] .page-header:before {
+    background: var(--primary-theme-faded);
+}
+
+.pcoded .pcoded-navbar .pcoded-navigation-label[menu-title-theme="theme1"] {
+    color: var(--secondary2-theme);
+}
+
+
+.pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item > li.active > a, .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item > li:hover > a {
+    background: var(--secondary-theme);
+    color: #fff !important;
+}
+
+.pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item li:hover > a {
+    /*color: #448aff !important;*/
+}
+
+.btn-primary, .sweet-alert button.confirm, .wizard > .actions a {
+    background-color: var(--secondary-theme);
+    border-color: var(--secondary-theme);
+    color: #fff;
+    cursor: pointer;
+    -webkit-transition: all ease-in 0.3s;
+    transition: all ease-in 0.3s;
+}
+
+    .btn-primary:hover, .sweet-alert button.confirm:hover, .wizard > .actions a:hover {
+        background-color: var(--secondary-theme-faded);
+        border-color: var(--secondary-theme-faded);
+        /*background-color: #11c15b;
+    border-color: #11c15b;*/
+    }

@@ -1,0 +1,53 @@
+﻿@{ 
+    ViewBag.Title = "Dashboard";
+}
+
+
+@section BreadCrumbs{
+
+    
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+
+
+
+<div class="row">
+
+
+    @Html.Partial("_NewApplications")
+
+
+
+    @Html.Partial("_SubmittedApplications")
+
+
+
+    @Html.Partial("_AwardedApplications")
+
+
+</div>
+
+@Html.Action("Earnings", "Stats")
+
+@*<div class="row">
+
+
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Supplier Information</h5>
+                    <span>Here are your registration details</span>
+                </div>
+                <div class="card-block lazy_loaded" data-url="@Url.Action("SupplyInfo")">
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>*@
+@*<div class="col-md-6 col-sm-12"></div>*@

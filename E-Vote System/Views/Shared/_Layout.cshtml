@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>@ViewBag.Title - @Configs.CompanyName</title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
+    <meta name="author" content="Codedthemes" />
+
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="/Content/imgs/favicon.png" type="image/x-icon">
+    
+    @Html.Partial("_CSS")
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <script type="text/javascript" src="/Content/Materialable/assets/js/jquery/jquery.min.js "></script>
+    <!--amCharts-->
+    @*<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/material.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/lang/de_DE.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/geodata/germanyLow.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/fonts/notosans-sc.js"></script>*@
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+    <div class="loading_content">
+        <div class="loader">
+            <img src="/Content/imgs/Ripple-1s-200px.gif" alt="" /> <p>Please wait...</p>
+        </div>
+    </div>
+
+    <!-- Pre-loader start -->
+    <div class="theme-loader">
+        <div class="loader-track">
+            <div class="preloader-wrapper">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pre-loader end -->
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+
+            @Html.Action("NavBar", "Home")
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+
+
+                    @Html.Partial("_SideBar")
+
+
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">@ViewBag.Title</h5>
+                                            @if (ViewBag.SubTitle != null)
+                                            {
+                                                <p class="m-b-0">@ViewBag.SubTitle</p>
+                                            }
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="breadcrumb">
+
+
+                                            <li class="breadcrumb-item">
+                                                <a href="@Url.Action("Index","Home")"> <i class="fa fa-home"></i> </a>
+                                            </li>
+                                            @RenderSection("BreadCrumbs", required: false)
+                                            @*<li class="breadcrumb-item">
+                                                    <a href="#!">Dashboard</a>
+                                                </li>*@
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+
+                            <!-- Main-body start -->
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <!-- Page-body start -->
+                                    <div class="page-body">
+
+                                        @if (ViewBag.PageTitle != null)
+                                        {
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6>@ViewBag.PageTitle</h6>
+                                                            <p>@ViewBag.PageSubTitle</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+
+                                        @RenderBody()
+
+
+                                    </div>
+                                    <!-- Page-body end -->
+                                </div>
+                                <div id="styleSelector"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Warning Section Starts -->
+    <!-- Older IE warning message -->
+    <!--[if lt IE 10]>
+    <div class="ie-warning">
+        <h1>Warning!!</h1>
+        <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+        <div class="iew-container">
+            <ul class="iew-download">
+                <li>
+                    <a href="http://www.google.com/chrome/">
+                        <img src="/Content/Materialable/assets/images/browser/chrome.png" alt="Chrome">
+                        <div>Chrome</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.mozilla.org/en-US/firefox/new/">
+                        <img src="/Content/Materialable/assets/images/browser/firefox.png" alt="Firefox">
+                        <div>Firefox</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.opera.com">
+                        <img src="/Content/Materialable/assets/images/browser/opera.png" alt="Opera">
+                        <div>Opera</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.apple.com/safari/">
+                        <img src="/Content/Materialable/assets/images/browser/safari.png" alt="Safari">
+                        <div>Safari</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                        <img src="/Content/Materialable/assets/images/browser/ie.png" alt="">
+                        <div>IE (9 & above)</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <p>Sorry for the inconvenience!</p>
+    </div>
+    <![endif]-->
+    <!-- Warning Section Ends -->
+
+    @Html.Partial("_JAVASCRIPTS")
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+
+</html>

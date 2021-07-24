@@ -1,0 +1,64 @@
+﻿
+<div class="pcoded-navigation-label">Active Applications</div>
+<ul class="pcoded-item pcoded-left-item">
+    <li class="pcoded-hasmenu">
+        <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="far fa-folder-open"></i><b>BC</b></span>
+            <span class="pcoded-mtext">Tenders</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+        <ul class="pcoded-submenu">
+            <li class=" ">
+                <a href="@Url.Action("Active","OpenTender")" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Open Tenders</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="@Url.Action("Active","RestrictedTender")" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Restricted Tenders</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="@Url.Action("Active","FrameworkTender")" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Framework Agreement Tenders</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class=" ">
+                <a href="@Url.Action("Active","LowValueTender")" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Low Value Tenders</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+    <li class="">
+        <a href="@Url.Action("Active","RFQ")" class="waves-effect waves-dark">
+            @*<span class="pcoded-micon"><i class="far fa-envelope-open"></i><b>C</b></span>*@
+            <span class="pcoded-micon"><i class="fa fa-quote-left"></i><b>C</b></span>
+            <span class="pcoded-mtext">Request for Quotation</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+    </li>
+    <li class="">
+        <a href="@Url.Action("Active","RFP")" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="far fa-file-alt"></i><b>C</b></span>
+            <span class="pcoded-mtext">Request for Proposal</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+    </li>
+    <li class="">
+        <a href="@Url.Action("Active","EOI")" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="fa fa-hand-paper"></i><b>C</b></span>
+            <span class="pcoded-mtext">Expression of Interest</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+    </li>
+</ul>

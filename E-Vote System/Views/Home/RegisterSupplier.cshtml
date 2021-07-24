@@ -1,0 +1,125 @@
+﻿@using EProcurementPortal.Models
+@model EProcurementPortal.Models.ViewModels.ProspectiveSupplierRegistrationViewModel
+
+@{
+    ViewBag.Title = "Prospective Supplier Registration";
+
+
+    ViewBag.PageTitle = "Prospective Supplier Registration";
+    ViewBag.PageSubTitle = "Submit your supplier details.";
+}
+
+
+@section Styles{
+    <style>
+        .auth-box {
+            max-width: unset !important;
+        }
+    </style>
+}
+
+
+
+
+@if (Model != null)
+{
+    using (Html.BeginForm("RegisterSupplier", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "md-float-material form-material", role = "form", @id = "RegistrationForm" }))
+    {
+
+        <div class="form-group">
+            @Html.AntiForgeryToken()
+        </div>
+
+
+
+        <div class="auth-box card">
+
+            <div class="card-block">
+                <div class="row m-b-20">
+                    <div class="col-md-12">
+                        <h4 class="text-center text-uppercase">Register Form</h4>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+
+
+                @Html.Partial("_ProspectiveSupplierRegistrationTabs", Model)
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-10">
+                        <p class="text-inverse text-left m-b-0">Thank you.</p>
+                        <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p>
+                    </div>
+                    <div class="col-md-2">
+                        <img src="/Content/Materialable/assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    }
+
+}
+
+
+
+
+
+
+@section Scripts{
+    <script>
+        let branchElement = $("#BranchCode");
+        let bankElement = $("#BankCode");
+
+        let allBranches = $("#all_branches").data("branches");
+
+
+        bankElement.on("change", function () {
+            filterBranches();
+        });
+
+        filterBranches();
+
+        function filterBranches() {
+
+            let currentBank = bankElement.val();
+
+            const branches = allBranches.filter(b => b.Bank_Code == currentBank);
+
+
+            branchElement.empty();
+
+            branches.forEach(function (e, k) {
+                let option = `<option value="${e.Branch_Code}">${e.Branch_Name}</option>`;
+
+                branchElement.append(option);
+            });
+
+        }
+
+
+
+        $("#RegistrationForm").validate({
+            submitHandler: function (form) {
+                form.submit();
+                @*$.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        console.log(response);
+
+                        form[0].reset();
+                    }
+                })*@
+            }
+        });
+
+    </script>
+}

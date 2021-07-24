@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Seems like you are not registered as a supplier</div>
+
+<div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Instructions</h5>
+                <span>You are not registered as a supplier.</span>
+            </div>
+
+            <div class="card-block">
+                <p>
+                    Sorry we could not find your supplier information. If you had registered previously, please contact the administrator for further assistance.
+                </p>
+                <p>
+                    You can also click the button below to register your details.
+                </p>
+                @*<a href="@Url." class="btn btn-danger btn-sm">Register as a supplier</a>*@
+                
+                @Html.ActionLink("Register as a supplier", "RegisterSupplier", null, new { @class = "btn btn-danger btn-sm" })
+            </div>
+
+        </div>
+    </div>
+
+    
+</div>
