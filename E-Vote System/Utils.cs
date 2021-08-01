@@ -2,8 +2,11 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Web;
 
 namespace E_Vote_System
 {
@@ -12,6 +15,12 @@ namespace E_Vote_System
 
         private static ApplicationDbContext dc = new ApplicationDbContext();
         private static string ToastSeparator = Configs.ToastSeparator;
+
+        public static ApplicationUser GetCurrentUser()
+        {
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext())
+                return applicationDbContext.Users.Where<ApplicationUser>((Expression<Func<ApplicationUser, bool>>)(x => x.UserName == HttpContext.Current.User.Identity.Name)).FirstOrDefault<ApplicationUser>();
+        }
 
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -238,6 +247,37 @@ namespace E_Vote_System
                 Utils.LogException(e);
                 return message;
             }
+        }
+
+
+        public static string FormatDisplayDateTimeLocal(DateTime? date)
+        {
+            string output = "";
+
+            if (!date.HasValue) return output;
+
+            output = formatDisplayDateTimeLocal(date.Value);
+
+            return output;
+        }
+
+
+        private static string formatDisplayDateTimeLocal(DateTime date)
+        {
+            string output = "";
+                       
+
+            try
+            {
+
+                output = date.ToString("yyyy-MM-ddTHH:mm");
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+            }
+
+            return output;
         }
 
     }

@@ -11,6 +11,18 @@ namespace E_Vote_System.Controllers
     {
         public ActionResult Index()
         {
+            try
+            {
+
+                var user = User;
+
+                bool isAdmin = User.IsInRole("Administrator");
+                bool isVoter = User.IsInRole("Voter");
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+            }
             return View();
         }
 

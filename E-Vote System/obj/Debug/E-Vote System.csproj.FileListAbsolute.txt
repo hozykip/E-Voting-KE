@@ -123,3 +123,16 @@ D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.Extensions.DependencyI
 D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.Extensions.DependencyInjection.Abstractions.xml
 D:\Backup\Works\E-Vote System\E-Vote System\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\Backup\Works\E-Vote System\E-Vote System\bin\System.Threading.Tasks.Extensions.xml
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.ElectionTypes.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.Elections.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.ElectionFieldsUpdate.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.ElectionFieldsUpdateCreatorDates.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.ElectionPositions.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.ElectionCandidates.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.ElectionTypesDates.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.Votes.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.CreatedAtDefaultValue.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.NullableDateModifiedFields.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.DateCreatedFields.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.DateCreatedFieldsUsers.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.optionalcreatedbyelection.resources

@@ -2,6 +2,14 @@
 const ToastSeparator = ';';
 const DefaultErrorMessage = 'Oops an error has occurred';
 
+const ApiStatusCodes = {
+    SUCCESS: 1,
+    ACTIVATE_USER: 5,
+    SESSION_OUT: 6,
+    STATUS_ERROR: 2,
+    STATUS_FAIL: 0
+}
+
 function showLoader() {
     MYLOADER.fadeIn("slow");
 }
@@ -149,4 +157,66 @@ $(document).ready(function () {
 
         });
     }
+
+    $(".delete_ajax").click(function (e) {
+        e.preventDefault();
+
+        hideLoader();
+
+        let confirm = window.confirm("Are you sure you want to remove this?");
+
+        //alert(confirm === false)
+
+
+        let parent = $(this).closest(".delete_ancestor");
+
+        if (confirm === true) {
+            $(".loading_content").css("display", "flex");
+            $.ajax({
+                method: "POST",
+                url: $(this).attr("href"),
+                processData: false,
+                cache: false,
+                data: {},
+                beforeSend: function () {
+                    showLoader();
+                },
+                complete: function () {
+                    hideLoader();
+                },
+                success: function (data) {
+                    /*hideLoader();
+                    $(".loading_content").css("display", "none");*/
+
+                    console.log(data);
+
+                    debugger;
+
+                    switch (data.status) {
+                        case ApiStatusCodes.SUCCESS:
+
+                            parent.remove();
+                            toastr.success(data.message, 'Delete');
+
+                            break;
+                        default:
+                            toastr.error(data.message, 'Delete');
+                            break;
+
+                    }
+                },
+                error: function () {
+                    //hideLoader();
+
+                    toastr.error('Oops! An error has occurred', 'Delete Failed');
+                    
+                }
+            });
+        } else {
+            $(".loading_content").css("display", "none");
+            hideLoader();
+        }
+        $(".loading_content").css("display", "none");
+        hideLoader();
+    });
 });

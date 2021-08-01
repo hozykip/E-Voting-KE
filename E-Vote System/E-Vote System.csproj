@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -134,12 +140,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -191,6 +191,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Configs.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ElectionPositionModelsController.cs" />
+    <Compile Include="Controllers\ElectionsController.cs" />
+    <Compile Include="Controllers\ElectionTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -204,10 +207,71 @@
     <Compile Include="Migrations\202107241531401_ProfilePic.Designer.cs">
       <DependentUpon>202107241531401_ProfilePic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107292004448_ElectionTypes.cs" />
+    <Compile Include="Migrations\202107292004448_ElectionTypes.Designer.cs">
+      <DependentUpon>202107292004448_ElectionTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292017206_Elections.cs" />
+    <Compile Include="Migrations\202107292017206_Elections.Designer.cs">
+      <DependentUpon>202107292017206_Elections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292041014_ElectionFieldsUpdate.cs" />
+    <Compile Include="Migrations\202107292041014_ElectionFieldsUpdate.Designer.cs">
+      <DependentUpon>202107292041014_ElectionFieldsUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292045178_ElectionFieldsUpdate-CreatorDates.cs" />
+    <Compile Include="Migrations\202107292045178_ElectionFieldsUpdate-CreatorDates.Designer.cs">
+      <DependentUpon>202107292045178_ElectionFieldsUpdate-CreatorDates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292050145_Election-Positions.cs" />
+    <Compile Include="Migrations\202107292050145_Election-Positions.Designer.cs">
+      <DependentUpon>202107292050145_Election-Positions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292103501_Election-Candidates.cs" />
+    <Compile Include="Migrations\202107292103501_Election-Candidates.Designer.cs">
+      <DependentUpon>202107292103501_Election-Candidates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292105257_Election-TypesDates.cs" />
+    <Compile Include="Migrations\202107292105257_Election-TypesDates.Designer.cs">
+      <DependentUpon>202107292105257_Election-TypesDates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292119033_Votes.cs" />
+    <Compile Include="Migrations\202107292119033_Votes.Designer.cs">
+      <DependentUpon>202107292119033_Votes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107292131170_CreatedAtDefaultValue.cs" />
+    <Compile Include="Migrations\202107292131170_CreatedAtDefaultValue.Designer.cs">
+      <DependentUpon>202107292131170_CreatedAtDefaultValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107312131371_NullableDateModifiedFields.cs" />
+    <Compile Include="Migrations\202107312131371_NullableDateModifiedFields.Designer.cs">
+      <DependentUpon>202107312131371_NullableDateModifiedFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107312139506_DateCreatedFields.cs" />
+    <Compile Include="Migrations\202107312139506_DateCreatedFields.Designer.cs">
+      <DependentUpon>202107312139506_DateCreatedFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107312141100_DateCreatedFields-Users.cs" />
+    <Compile Include="Migrations\202107312141100_DateCreatedFields-Users.Designer.cs">
+      <DependentUpon>202107312141100_DateCreatedFields-Users.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108011455003_optional-created-by-election.cs" />
+    <Compile Include="Migrations\202108011455003_optional-created-by-election.Designer.cs">
+      <DependentUpon>202108011455003_optional-created-by-election.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DefaultJsonResponse.cs" />
+    <Compile Include="Models\ElectionCandidateModel.cs" />
+    <Compile Include="Models\ElectionModel.cs" />
+    <Compile Include="Models\ElectionPositionModel.cs" />
+    <Compile Include="Models\ElectionTypes.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ResultCodes.cs" />
+    <Compile Include="Models\ViewModels\ElectionEditViewModel.cs" />
+    <Compile Include="Models\ViewModels\ElectionTypesViewModels.cs" />
+    <Compile Include="Models\VoteModel.cs" />
     <Compile Include="MyDbSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -2556,6 +2620,21 @@
     <Content Include="Views\Shared\_UnAuthPartial.cshtml" />
     <Content Include="Views\Home\DashBoard.cshtml" />
     <Content Include="Views\Home\RegisterSupplier.cshtml" />
+    <Content Include="Views\ElectionTypes\Create.cshtml" />
+    <Content Include="Views\ElectionTypes\Delete.cshtml" />
+    <Content Include="Views\ElectionTypes\Details.cshtml" />
+    <Content Include="Views\ElectionTypes\Edit.cshtml" />
+    <Content Include="Views\ElectionTypes\Index.cshtml" />
+    <Content Include="Views\Elections\Create.cshtml" />
+    <Content Include="Views\Elections\Delete.cshtml" />
+    <Content Include="Views\Elections\Details.cshtml" />
+    <Content Include="Views\Elections\Edit.cshtml" />
+    <Content Include="Views\Elections\Index.cshtml" />
+    <Content Include="Views\ElectionPositionModels\Create.cshtml" />
+    <Content Include="Views\ElectionPositionModels\Delete.cshtml" />
+    <Content Include="Views\ElectionPositionModels\Details.cshtml" />
+    <Content Include="Views\ElectionPositionModels\Edit.cshtml" />
+    <Content Include="Views\ElectionPositionModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2579,6 +2658,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107241531401_ProfilePic.resx">
       <DependentUpon>202107241531401_ProfilePic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292004448_ElectionTypes.resx">
+      <DependentUpon>202107292004448_ElectionTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292017206_Elections.resx">
+      <DependentUpon>202107292017206_Elections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292041014_ElectionFieldsUpdate.resx">
+      <DependentUpon>202107292041014_ElectionFieldsUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292045178_ElectionFieldsUpdate-CreatorDates.resx">
+      <DependentUpon>202107292045178_ElectionFieldsUpdate-CreatorDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292050145_Election-Positions.resx">
+      <DependentUpon>202107292050145_Election-Positions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292103501_Election-Candidates.resx">
+      <DependentUpon>202107292103501_Election-Candidates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292105257_Election-TypesDates.resx">
+      <DependentUpon>202107292105257_Election-TypesDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292119033_Votes.resx">
+      <DependentUpon>202107292119033_Votes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107292131170_CreatedAtDefaultValue.resx">
+      <DependentUpon>202107292131170_CreatedAtDefaultValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107312131371_NullableDateModifiedFields.resx">
+      <DependentUpon>202107312131371_NullableDateModifiedFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107312139506_DateCreatedFields.resx">
+      <DependentUpon>202107312139506_DateCreatedFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107312141100_DateCreatedFields-Users.resx">
+      <DependentUpon>202107312141100_DateCreatedFields-Users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108011455003_optional-created-by-election.resx">
+      <DependentUpon>202108011455003_optional-created-by-election.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
