@@ -1,65 +1,69 @@
-﻿@model E_Vote_System.Models.ElectionPositionModel
+﻿@model E_Vote_System.Models.ViewModels.ElectionPositionEditViewModel
+
+
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit position";
+    ViewBag.PageTitle = "Edit position";
+    ViewBag.PageSubTitle = "Election position Form";
 }
 
-<h2>Edit</h2>
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Election positions List", "Index", "ElectionPositionModels", new { id = Model.ElectionId })
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>ElectionPositionModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ElectionId, "ElectionId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ElectionId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ElectionId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <span>Election form</span>
+    </div>
+    <div class="card-block table-border-style">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        @using (Html.BeginForm("Edit", "ElectionPositionModels", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+        {
+
+            @Html.AntiForgeryToken()
+
+
+            <div class="form-group mx-sm-3 mb-2">
+                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "mr-2" })
                 @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
             </div>
+
+
+
+            <div class="form-group mb-2">
+                <input type="submit" value="Update" class="btn btn-primary btn-sm" />
+            </div>
+        }
+
+
+        <hr class="mt-3" />
+        <div class="d-flex justify-content-start">
+            <a href="@Url.Action("Index", new { id = Model.ElectionId })" class="btn btn-sm btn-outline-dark">
+                <i class="fa fa-list-ol"></i>
+                Back to List
+            </a>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateModified, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateModified, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateModified, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

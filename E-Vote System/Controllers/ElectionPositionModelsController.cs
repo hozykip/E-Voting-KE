@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using E_Vote_System.Models;
+using E_Vote_System.Models.ViewModels;
 
 namespace E_Vote_System.Controllers
 {
@@ -80,17 +81,50 @@ namespace E_Vote_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(int id, [Bind(Include = "Id,ElectionId,Position,DateCreated,DateModified")] ElectionPositionModel electionPositionModel)
+        public async Task<ActionResult> Create(int id, [Bind(Include = "Id,ElectionId,Position,DateCreated,DateModified")] ElectionPositionModel electionPositionModel, FormCollection form)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                electionPositionModel.DateCreated = DateTime.Now;
-                db.ElectionPositionModels.Add(electionPositionModel);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ViewBag.ElectionId = new SelectList(db.ElectionModels, "Id", "CreatedBy", electionPositionModel.ElectionId);
+            try
+            {
+
+                var electionId = form["Model.ElectionId"];
+
+                if (ModelState.IsValid)
+                {
+                    electionPositionModel.DateCreated = DateTime.Now;
+                    electionPositionModel.ElectionId = Convert.ToInt32(electionId);
+                    db.ElectionPositionModels.Add(electionPositionModel);
+                    await db.SaveChangesAsync();
+                    TempData["Message"] = Utils.GenerateToastSuccess("New Position added successfully", "New Position");
+                    return RedirectToAction("Index", new { id = electionId });
+                }
+
+            }
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(Configs.DefaultErrorMessage, "New Position");
+            }
+
+            try
+            {
+
+                ViewBag.Election = await db.ElectionModels.FindAsync(id);
+
+            }
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(Configs.DefaultErrorMessage, "New Position");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            }
+            
+
             return View(electionPositionModel);
         }
 
@@ -101,13 +135,35 @@ namespace E_Vote_System.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectionPositionModel electionPositionModel = await db.ElectionPositionModels.FindAsync(id);
-            if (electionPositionModel == null)
+
+            ElectionPositionEditViewModel model = null;
+
+            try
             {
-                return HttpNotFound();
+
+                ElectionPositionModel electionPositionModel = await db.ElectionPositionModels.FindAsync(id);
+                if (electionPositionModel == null)
+                {
+                    return HttpNotFound();
+                }
+
+                model = new ElectionPositionEditViewModel
+                {
+                    Id = electionPositionModel.Id,
+                    ElectionId = electionPositionModel.ElectionId,
+                    Position = electionPositionModel.Position
+                };
+
+
+
             }
-            ViewBag.ElectionId = new SelectList(db.ElectionModels, "Id", "CreatedBy", electionPositionModel.ElectionId);
-            return View(electionPositionModel);
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(Configs.DefaultErrorMessage);
+            }
+
+            return View(model);
         }
 
         // POST: ElectionPositionModels/Edit/5
@@ -115,16 +171,35 @@ namespace E_Vote_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ElectionId,Position,DateCreated,DateModified")] ElectionPositionModel electionPositionModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ElectionId,Position,DateCreated,DateModified")] ElectionPositionEditViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(electionPositionModel).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    ElectionPositionModel electionPositionModel = await db.ElectionPositionModels.FindAsync(model.Id);
+                    electionPositionModel.Position = model.Position;
+                    electionPositionModel.DateModified = DateTime.Now;
+                    db.Entry(electionPositionModel).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    TempData["Message"] = Utils.GenerateToastSuccess("Position updated successfully", "Edit Position");
+                    return RedirectToAction("Index", new { id = electionPositionModel.ElectionId });
+                }
+                else
+                {
+                    var errors = ModelState.Select(y => new { key = y.Key, errors = y.Value.Errors }).Where(y => y.errors.Count > 0).ToList();
+
+                    TempData["Message"] = Utils.GenerateToastError(string.Join(",", errors), "Edit Position");
+                }
             }
-            ViewBag.ElectionId = new SelectList(db.ElectionModels, "Id", "CreatedBy", electionPositionModel.ElectionId);
-            return View(electionPositionModel);
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(Configs.DefaultErrorMessage, "Edit Position");
+            }
+
+            
+            return View(model);
         }
 
         // GET: ElectionPositionModels/Delete/5
@@ -144,13 +219,32 @@ namespace E_Vote_System.Controllers
 
         // POST: ElectionPositionModels/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ElectionPositionModel electionPositionModel = await db.ElectionPositionModels.FindAsync(id);
-            db.ElectionPositionModels.Remove(electionPositionModel);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            DefaultJsonResponse response = new DefaultJsonResponse
+            {
+                status = ResultCodes.FAIL,
+                message = Configs.DefaultErrorMessage
+            };
+
+            try
+            {
+                ElectionPositionModel electionPositionModel = await db.ElectionPositionModels.FindAsync(id);
+                db.ElectionPositionModels.Remove(electionPositionModel);
+                await db.SaveChangesAsync();
+
+                response.status = ResultCodes.SUCCESS;
+                response.message = "Position deleted successfully";
+            }
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+            }
+
+            return Json(response);
+
+
         }
 
         protected override void Dispose(bool disposing)
