@@ -191,6 +191,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Configs.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CandidatesController.cs" />
     <Compile Include="Controllers\ElectionPositionModelsController.cs" />
     <Compile Include="Controllers\ElectionsController.cs" />
     <Compile Include="Controllers\ElectionTypesController.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper_Code\Common\AllowFileSizeAttribute.cs" />
     <Compile Include="Migrations\202107241315537_Init.cs" />
     <Compile Include="Migrations\202107241315537_Init.Designer.cs">
       <DependentUpon>202107241315537_Init.cs</DependentUpon>
@@ -269,6 +271,8 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ResultCodes.cs" />
+    <Compile Include="Models\ViewModels\ElectionCandidateCreateViewModel.cs" />
+    <Compile Include="Models\ViewModels\ElectionCandidateEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionPositionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionTypesViewModels.cs" />
@@ -2636,6 +2640,11 @@
     <Content Include="Views\ElectionPositionModels\Details.cshtml" />
     <Content Include="Views\ElectionPositionModels\Edit.cshtml" />
     <Content Include="Views\ElectionPositionModels\Index.cshtml" />
+    <Content Include="Views\Candidates\Create.cshtml" />
+    <Content Include="Views\Candidates\Delete.cshtml" />
+    <Content Include="Views\Candidates\Details.cshtml" />
+    <Content Include="Views\Candidates\Edit.cshtml" />
+    <Content Include="Views\Candidates\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

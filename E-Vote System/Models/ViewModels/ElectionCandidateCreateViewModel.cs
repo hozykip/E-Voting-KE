@@ -1,15 +1,16 @@
-﻿using E_Vote_System.Helper_Code.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace E_Vote_System.Models
+namespace E_Vote_System.Models.ViewModels
 {
-    public class ElectionCandidateModel
+    public class ElectionCandidateCreateViewModel
     {
+
+
         [Required]
         public int Id { get; set; }
         [Required]
@@ -32,7 +33,6 @@ namespace E_Vote_System.Models
         public string PhoneNumber { get; set; }
         [Display(Name = "Manifesto")]
         public string ManifestoFile { get; set; }
-
         [Display(Name = "Profile Picture")]
         public string ProfilePicture { get; set; }
 
@@ -42,21 +42,21 @@ namespace E_Vote_System.Models
         [Display(Name = "Date Modified")]
         public DateTime? DateModified { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Manifesto File")]
-        [AllowFileSize(FileSize = 2 * 1024 * 1024, FileExtensions = "pdf", ErrorMessage = "Please select a PDF file not bigger than 2MB")]
-        public HttpPostedFileBase ManifestoFileUpload { get; set; }
-
-        [NotMapped]
-        [Required]
-        [Display(Name = "Profile Picture File")]
-        [AllowFileSize(FileSize = 2 * 1024 * 1024, FileExtensions = "jpeg,jpg,png", ErrorMessage = "Please select an image file not bigger than 2MB")]
-        public HttpPostedFileBase ProfilePictureUpload { get; set; }
-
 
         [ForeignKey("PositionId")]
         public ElectionPositionModel ElectionPositionModel { get; set; }
 
         public List<VoteModel> Votes { get; set; }
+
+
+        /*[Display(Name = "Manifesto")]
+        [AllowFileSize(FileSize = 2 * 1024, FileExtensions = ".pdf", ErrorMessage = "Please select a PDF file not bigger than 2MB")]
+        public HttpPostedFileBase ManifestoFile { get; set; }
+
+        [Required]
+        [Display(Name = "Profile Picture")]
+        [AllowFileSize(FileSize = 2 * 1024, FileExtensions = "jpeg,jpg,png", ErrorMessage = "Please select an image file not bigger than 2MB" )]        
+        public HttpPostedFileBase ProfilePicture { get; set; }*/
+
     }
 }

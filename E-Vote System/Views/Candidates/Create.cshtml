@@ -1,0 +1,138 @@
+﻿@using E_Vote_System.Models;
+@model E_Vote_System.Models.ElectionCandidateModel
+
+
+
+
+@{
+    ViewBag.Title = "Create a candidate";
+    ViewBag.PageTitle = "Create a candidate";
+    ViewBag.PageSubTitle = "Candidate Form";
+
+    ElectionPositionModel position = ViewBag.Position as ElectionPositionModel;
+}
+
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Election Candiates List", "Index", "Candidates", new { id = position.Id })
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>Candidate form</span>
+    </div>
+    <div class="card-block table-border-style">
+
+        @using (Html.BeginForm("Create", "Candidates", new { id = position.Id }, FormMethod.Post, htmlAttributes: new { @class = "", enctype = "multipart/form-data" }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.Hidden("Model.PositionId", position.Id)
+
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.SurName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.SurName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SurName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.OtherName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.OtherName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.OtherName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.ManifestoFileUpload, htmlAttributes: new { @class = "control-label" })
+                        <input type="file" name="ManifestoFileUpload" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.ManifestoFileUpload, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.ProfilePictureUpload, htmlAttributes: new { @class = "control-label" })
+                        <input type="file" name="ProfilePictureUpload" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.ProfilePictureUpload, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <div class="col d-flex justify-content-end">
+                    <div class="form-group mt-2 mx-sm-3 mb-2">
+                        <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                    </div>
+                </div>
+            </div>
+
+            
+        }
+
+
+        <hr class="mt-3" />
+        <div class="d-flex justify-content-start">
+            <a href="@Url.Action("Index", new { id = position.Id })" class="btn btn-sm btn-outline-dark">
+                <i class="fa fa-list-ol"></i>
+                Back to List
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

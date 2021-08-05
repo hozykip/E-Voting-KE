@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace E_Vote_System.Models
+namespace E_Vote_System.Models.ViewModels
 {
-    public class ElectionCandidateModel
+    public class ElectionCandidateEditViewModel
     {
         [Required]
         public int Id { get; set; }
@@ -32,7 +32,6 @@ namespace E_Vote_System.Models
         public string PhoneNumber { get; set; }
         [Display(Name = "Manifesto")]
         public string ManifestoFile { get; set; }
-
         [Display(Name = "Profile Picture")]
         public string ProfilePicture { get; set; }
 
@@ -41,17 +40,6 @@ namespace E_Vote_System.Models
         public DateTime DateCreated { get; set; }
         [Display(Name = "Date Modified")]
         public DateTime? DateModified { get; set; }
-
-        [NotMapped]
-        [Display(Name = "Manifesto File")]
-        [AllowFileSize(FileSize = 2 * 1024 * 1024, FileExtensions = "pdf", ErrorMessage = "Please select a PDF file not bigger than 2MB")]
-        public HttpPostedFileBase ManifestoFileUpload { get; set; }
-
-        [NotMapped]
-        [Required]
-        [Display(Name = "Profile Picture File")]
-        [AllowFileSize(FileSize = 2 * 1024 * 1024, FileExtensions = "jpeg,jpg,png", ErrorMessage = "Please select an image file not bigger than 2MB")]
-        public HttpPostedFileBase ProfilePictureUpload { get; set; }
 
 
         [ForeignKey("PositionId")]

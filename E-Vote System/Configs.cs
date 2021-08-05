@@ -30,5 +30,8 @@ namespace E_Vote_System
         public static readonly string AdminUserPassword = ConfigurationManager.AppSettings["AdminUserPassword"];
         public static readonly string AdminUserAddress = ConfigurationManager.AppSettings["AdminUserAddress"];
 
+        public static readonly string DocumentsPath = ConfigurationManager.AppSettings["DocumentsPath"];
+        public static readonly string DocumentsUrl = ConfigurationManager.AppSettings["DocumentsUrl"];
+
     }
 }

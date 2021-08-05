@@ -76,6 +76,7 @@
                             </td>
                             <td>
                                 <a href="@Url.Action("Edit", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="@Url.Action("Index","Candidates", new { id = item.Id })" class=" btn btn-sm btn-outline-success mr-2 mb-2"><i class="fa fa-users"></i> Candidates</a>
                                 <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger mb-2 delete_ajax"><i class="fa fa-trash"></i> Delete</a>
                             </td>
                         </tr>

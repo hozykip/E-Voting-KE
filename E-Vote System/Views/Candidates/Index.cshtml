@@ -1,0 +1,146 @@
+﻿@model IEnumerable<E_Vote_System.Models.ElectionCandidateModel>
+
+
+
+
+@{
+    ViewBag.Title = "Position Candidates";
+    ViewBag.PageTitle = "Position Candidates";
+    ViewBag.PageSubTitle = "Position Candidates List";
+}
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>All @ViewBag.Title</span>
+        <div class="card-header-right">
+
+
+            <a href="@Url.Action("Create", new { id = ViewBag.PositionId })" class="btn btn-success btn-sm" title="Add position candidate"><i class="fa fa-plus-circle text-white"></i> New Candidate</a>
+
+
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+
+        @if (Model != null && Model.ToList().Count > 0)
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover data-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ElectionPositionModel.Position)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SurName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OtherName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EmailAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ManifestoFile)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProfilePicture)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateCreated)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateModified)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="delete_ancestor">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ElectionPositionModel.Position)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SurName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OtherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EmailAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td class="d-flex justify-content-center align-items-center">
+                                    @if (!string.IsNullOrWhiteSpace(item.ManifestoFile))
+                                    {
+                                        <a href="@Configs.DocumentsUrl@item.ManifestoFile" class="h-100 profile-img" target="_blank">
+                                            <i class="fa fa-file-pdf-o fa-3x"></i>
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.ProfilePicture))
+                                    {
+                                        <img src="@Configs.DocumentsUrl@item.ProfilePicture" class="h-100 profile-img" style="max-height: 150px;" alt="Display Picture" />
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateModified)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="@Url.Action("Edit", new { id = item.Id })" class=" btn btn-sm btn-outline-success mr-2 mb-2"><i class="fa fa-users"></i> Votes</a>
+                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger mb-2 delete_ajax"><i class="fa fa-trash"></i> Delete</a>
+                                </td>
+                            </tr>
+                            
+                        }
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">No @ViewBag.Title</div>
+        }
+
+    </div>
+</div>
+
