@@ -1,0 +1,30 @@
+﻿@model E_Vote_System.Models.ElectionPositionModel
+
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-danger">
+        <i class="fa fa-exclamation-circle"></i> @ViewBag.Message
+    </div>
+}
+
+@if (Model != null)
+{
+
+    List<E_Vote_System.Models.ElectionCandidateModel> candidates = ViewBag.Candidates as List<E_Vote_System.Models.ElectionCandidateModel>;
+
+    var votes = 0;
+
+    if (candidates != null)
+    {
+        votes = candidates.Sum(c => c.Votes.Count);
+    }
+
+    List<string> names = candidates.Select(y => $"{y.SurName} {y.FirstName} {y.OtherName}").ToList();
+    List<int> candidateVotes = candidates.Select(y => y.Votes.Count).ToList();
+
+    <div class="position_chart" id="position_container_@Model.Id" data-labels="@string.Join(",",names)" data-series="@string.Join(",",candidateVotes)"></div>
+}
+
+
+

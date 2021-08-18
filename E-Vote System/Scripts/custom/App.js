@@ -18,7 +18,21 @@ function hideLoader() {
     MYLOADER.fadeOut("slow");
 }
 
-
+function LoadHtmlToPage(element, url) {
+    $.ajax({
+        url,
+        method: 'POST',
+        contentType: 'application/html; charset=utf-8',
+        //type: 'GET',
+        dataType: 'html',
+        success: function (result) {
+            element.html(result);
+        },
+        error: function (xhr, status) {
+            element.html(`<div class='alert alert-danger'>${xhr.statusText}</div>`)
+        }
+    })
+}
 
 
 function cleanToastMessage(input) {
@@ -48,7 +62,63 @@ function GenerateToastInfo(message = null, title = "Message") {
     return finalMessage;
 }
 
+function addScript(url) {
+    var script = document.createElement('script');
+    script.type = 'application/javascript';
+    script.src = url;
 
+    $("#appendableScripts").append(script);
+
+    //document.head.appendChild(script);
+}
+
+/*function submitRegForm(e) {
+
+
+    let id = $(e).attr('id');
+
+    alert(id);
+
+    debugger;
+
+    $(`#${id}`).validate({
+        submitHandler: function (form) {
+
+            let url = $(form).attr('action');
+
+            let fd = new FormData();
+
+            $(form).find('.frm_input').each(function (i, e) {
+                fd.append($(e).attr('name'), $(e).val())
+            });
+
+            debugger;
+
+            alert(id);
+
+            $.ajax({
+                url,
+                method: 'POST',
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    $('.reg_form_container').html(res);
+                },
+                error: function (err) {
+                    let error = GenerateToastError(err.statusText);
+
+                    toastrAlert(error);
+                }
+            })
+        }
+    });
+
+    alert('submitted')
+
+    return false;
+}*/
 
 
 $(window).on('load', function () {
@@ -58,7 +128,12 @@ $(window).on('load', function () {
     console.log('page is fully loaded');
 });*/
 
+
+
 $(document).ready(function () {
+
+    addScript('https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js');
+
     var table = $(".data-table").DataTable({
         lengthChange: false,
         stateSave: true,

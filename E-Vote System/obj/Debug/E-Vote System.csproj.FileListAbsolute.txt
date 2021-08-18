@@ -136,3 +136,14 @@ D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.N
 D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.DateCreatedFields.resources
 D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.DateCreatedFieldsUsers.resources
 D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.optionalcreatedbyelection.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.addtestfieldtousers.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.removetestfieldtousers.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.votermodel.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.userotp.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.notificationModel.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.notificationModel_dates.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.notificationModel_title.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterCategories.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterProfile.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterModelForeignKey.resources
+D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterModelUniqueUserIdEmail.resources

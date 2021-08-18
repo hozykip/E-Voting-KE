@@ -1,0 +1,50 @@
+﻿
+@model E_Vote_System.Models.ElectionModel
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Information</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <h6>Name of Election</h6>
+            </td>
+            <td>@Model.Name
+            <td>
+        </tr>
+        <tr>
+            <td>
+                <h6>Type of Election</h6>
+            </td>
+            <td>@Model.Type.Type
+            <td>
+        </tr>
+        <tr>
+            <td>
+                <h6>Start Date</h6>
+            </td>
+            <td>@Utils.FormatDisplayDateTimeLocal(Model.StartDate)
+            <td>
+        </tr>
+        <tr>
+            <td>
+                <h6>Closing Date</h6>
+            </td>
+            <td>@Utils.FormatDisplayDateTimeLocal(Model.EndDate)
+            <td>
+        </tr>
+        <tr>
+            <td>
+                <h6>Positions</h6>
+            </td>
+            <td>@Model.ElectionPositionModels.Count
+            <td>
+        </tr>
+
+    </tbody>
+</table>

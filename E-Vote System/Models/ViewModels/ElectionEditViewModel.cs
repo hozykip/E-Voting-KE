@@ -31,6 +31,12 @@ namespace E_Vote_System.Models.ViewModels
         [Display(Name = "Date Modified")]
         public DateTime? DateModified { get; set; }
 
+        [Required]
+        [Display(Name = "Voter Category")]
+        public int VoterCategoryId { get; set; }
+
+        public VoterCategoryModel VoterCategory { get; set; }
+
         public ElectionTypes Type { get; set; }
 
         [ForeignKey("CreatedBy")]

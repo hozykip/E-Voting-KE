@@ -19,6 +19,7 @@ namespace E_Vote_System.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext dbContext = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -59,8 +60,9 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            Session["RegisterViewModelComplete"] = null;
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(new LoginViewModel());
         }
 
         //
@@ -70,6 +72,7 @@ namespace E_Vote_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            Session["RegisterViewModelComplete"] = null;
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -78,13 +81,21 @@ namespace E_Vote_System.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+            Utils.LogDebug(result);
+
+            string message = "";
             switch (result)
-            {
+            {                
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
+                    message = Utils.GenerateToastError("Your account has been locked");
+                    TempData["Message"] = message;
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
+                    message = Utils.GenerateToastError("Please verify your account before proceeding via the code send to your email address during registration");
+                    TempData["Message"] = message;
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
@@ -98,6 +109,7 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
+            Session["RegisterViewModelComplete"] = null;
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
@@ -113,6 +125,7 @@ namespace E_Vote_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+            Session["RegisterViewModelComplete"] = null;
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -141,7 +154,8 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View(new RegisterViewModel());
+            Session["RegisterViewModelComplete"] = null;
+            return View(new RegisterViewModelStart());
         }
 
         //
@@ -149,7 +163,136 @@ namespace E_Vote_System.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModelStart model)
+        {
+            Session["RegisterViewModelComplete"] = null;
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
+
+
+                    if (user != null)
+                    {
+                        TempData["Message"] = Utils.GenerateToastError("A user with this email address already exists");
+                    }else if(model.Email == Configs.AdminUserEmail)
+                    {
+                        bool userCreated = await RegisterAdmin(model.Email);
+
+                        if (!userCreated)
+                        {
+                            TempData["Message"] = Utils.GenerateToastError("Failed to create admin user. Please check the logs.");
+                        }
+                        else
+                        {
+                            TempData["Message"] = Utils.GenerateToastSuccess("Administrator account has been created successfully.");
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        VoterModel voter = dbContext.VoterModels.FirstOrDefault(v => v.EmailAddress == model.Email);
+
+                        if (voter == null)
+                        {
+                            TempData["Message"] = Utils.GenerateToastError("Sorry you cannot proceed with your registration. The given Email address could not be found in the voters list.");
+                        }
+                        else
+                        {
+
+                            RegisterViewModelComplete modelComplete = new RegisterViewModelComplete
+                            {
+                                Email = model.Email,
+                                FirstName = voter.FirstName,
+                                LastName = voter.LastName
+                            };
+
+                            Session["RegisterViewModelComplete"] = modelComplete;
+
+                            TempData["Message"] = Utils.GenerateToastSuccess("Voter information for your submitted email address has been retrieved successfully. Please proceed to complete your registration.");
+
+                            return RedirectToAction("RegisterViewModelComplete");
+                            //return View("RegisterComplete", modelComplete);
+                        }
+                    }
+
+                }
+                else
+                {
+                    TempData["Message"] = Utils.GenerateToastError("Please enter a valid email address");
+                }
+
+            }
+            catch (Exception e)
+            {
+                TempData["Message"] = Utils.GenerateToastError(e.Message);
+                Utils.LogException(e);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        private async Task<bool> RegisterAdmin(string emailAddress)
+        {
+            bool flag = false;
+
+            try
+            {
+
+                if(emailAddress == Configs.AdminUserEmail)
+                {
+                    var user = new ApplicationUser { UserName = Configs.AdminUserEmail, Email = Configs.AdminUserEmail, FirstName = Configs.AdminUserFirstName, LastName = Configs.AdminUserLastName, Address = Configs.AdminUserAddress };
+                    user.EmailConfirmed = true;
+                    user.PhoneNumberConfirmed = true;
+                    user.LockoutEnabled = false;
+                    user.DateCreated = DateTime.Now;
+                    
+                    var result = await UserManager.CreateAsync(user, Configs.AdminUserPassword);
+
+                    if (!result.Succeeded)
+                    {
+                        string error = string.Join(",", result.Errors.ToArray());
+
+                        Utils.LogErrors("Admin Creation - " + error);
+
+                        return false;
+                    }
+
+                    IdentityResult identityResult = UserManager.AddToRole(user.Id, "Administrator");
+
+                    if (!identityResult.Succeeded)
+                    {
+                        string error = string.Join(",", identityResult.Errors.ToArray());
+
+                        Utils.LogErrors("Admin Role Addition - " + error);
+
+                        return false;
+                    }
+
+                    flag = identityResult.Succeeded;
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+            }
+
+            return flag;
+        }
+        
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterOriginal(RegisterViewModel model)
         {
             try
             {
@@ -183,6 +326,8 @@ namespace E_Vote_System.Controllers
                         {
                             if(string.Equals(user.Email, Configs.AdminUserEmail))
                             {
+                                
+
                                 UserManager.AddToRole(user.Id, "Administrator");
                                 ViewBag.Message = "You have been registered successfully as an administrator.";
 
@@ -228,24 +373,294 @@ namespace E_Vote_System.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> RegisterStart(RegisterViewModelStart model)
+        {
+            Session["RegisterViewModelComplete"] = null;
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
+
+                    if(user != null)
+                    {
+                        ViewBag.Message = Utils.GenerateToastError("A user with this email address already exists");
+                    }
+                    else
+                    {
+                        VoterModel voter = dbContext.VoterModels.FirstOrDefault(v => v.EmailAddress == model.Email);
+
+                        if (voter == null)
+                        {
+                            ViewBag.Message = Utils.GenerateToastError("Sorry you cannot proceed with your registration. The given Email address could not be found in the voters list.");
+                        }
+                        else
+                        {
+
+                            RegisterViewModelComplete modelComplete = new RegisterViewModelComplete
+                            {
+                                Email = model.Email,
+                                FirstName = voter.FirstName,
+                                LastName = voter.LastName
+                            };
+
+                            ViewBag.Message = Utils.GenerateToastSuccess("Voter information for your submitted email address has been retrieved successfully. Please proceed to complete your registration.");
+
+                            return PartialView("_RegisterComplete", modelComplete);
+                        }
+                    }
+
+                }
+                else
+                {
+                    ViewBag.Message = Utils.GenerateToastError("Please enter a valid email address");
+                }
+
+            }catch(Exception e)
+            {
+                ViewBag.Message = Utils.GenerateToastError(e.Message);
+                Utils.LogException(e);
+            }
+
+            return PartialView("_RegisterStart", model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterViewModelComplete()
+        {
+
+            if(Session["RegisterViewModelComplete"] == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+
+                RegisterViewModelComplete modelComplete = (RegisterViewModelComplete)Session["RegisterViewModelComplete"];
+
+                return View(modelComplete);
+
+            }
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(e.Message);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> RegisterViewModelComplete(RegisterViewModelComplete model)
+        {
+
+            if(Session["RegisterViewModelComplete"] == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    VoterModel voter = dbContext.VoterModels.FirstOrDefault(v => v.EmailAddress == model.Email);
+
+                    if(voter != null)
+                    {
+
+                        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = voter.FirstName, LastName = voter.LastName, Address = voter.Address };
+
+                        if (string.Equals(user.Email, Configs.AdminUserEmail))
+                        {
+                            user.EmailConfirmed = true;
+                            user.PhoneNumberConfirmed = true;
+                            user.LockoutEnabled = false;
+                        }
+
+                        user.DateCreated = DateTime.Now;
+
+                        var result = await UserManager.CreateAsync(user, model.Password);
+
+                        if (result.Succeeded)
+                        {
+
+
+                            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                            // Send an email with this link
+                            string code = Utils.RandomString(6);
+
+                            user.OTP = code;
+
+                            await UserManager.UpdateAsync(user);
+
+                            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id}, protocol: Request.Url.Scheme);
+                            //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please use the following code to activate your account: "+code);
+                            await UserManager.SendEmailAsync(user.Id, "Confirm your account", "<p>You voter account has been created successfully.</p>" +
+                                "<p>Please use the following code to activate your account: " + code + "</p> " +
+                                "<p>Use this link to go to the confirmation page: <a href=\"" + callbackUrl + "\">Account Confirmation Page</a></p>");
+
+                            try
+                            {
+                                if (string.Equals(user.Email, Configs.AdminUserEmail))
+                                {
+                                    UserManager.AddToRole(user.Id, "Administrator");
+                                    ViewBag.Message = "You have been registered successfully as an administrator.";
+
+
+                                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                                    return RedirectToAction("Index", "Home");
+                                }
+                                else
+                                {
+                                    UserManager.AddToRole(user.Id, "Voter");
+
+                                    try
+                                    {
+
+                                        voter.UserId = user.Id;
+                                        dbContext.Entry(voter).State = System.Data.Entity.EntityState.Modified;
+                                        await dbContext.SaveChangesAsync();
+
+                                    }catch(Exception e)
+                                    {
+                                        Utils.LogException(e);
+                                    }
+
+                                    ViewBag.Message = "You have been registered successfully as a voter. An email has been send to your email address inorder to activate your account";
+                                }
+
+                            }
+                            catch (Exception e)
+                            {
+                                Utils.LogException(e);
+                            }
+
+                            ViewBag.Message = ViewBag.Message ?? "You have been registered successfully";
+
+
+
+                            TempData["Message"] = Utils.GenerateToastSuccess("Registration successful", "Account Registration");
+
+                            //TempData["Message"] = Utils.GenerateToastSuccess("Your account has been created successfully", "Account Registration");
+                            return View("Info");
+                        }
+
+                        AddErrors(result);
+
+                        
+
+
+
+                    }
+                    else
+                    {
+                        TempData["Message"] = Utils.GenerateToastError("Voter with the given email address could not be found in the voter records");
+                    }
+
+                }
+
+            }
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(e.Message);
+            }
+
+            return View(model);
+        }
+
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId)
+        {
+            Session["RegisterViewModelComplete"] = null;
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            ViewBag.userId = userId;
+
+            return View();
+        }
+        
+        [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
+            Session["RegisterViewModelComplete"] = null;
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            if (code == null)
+            {
+                TempData["Message"] = Utils.GenerateToastError("Please enter a valid activation code");
+                return View();
+            }
+
+            ApplicationUser user = dbContext.Users.Find(userId);
+
+            if(user == null)
+            {
+                TempData["Message"] = Utils.GenerateToastError("Invalid user. Not found");
+                return View();
+            }
+
+
+            if(user.OTP == code)
+            {
+                user.EmailConfirmed = true;
+                user.OTP = null;
+
+                dbContext.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                await dbContext.SaveChangesAsync();
+
+                //await UserManager.UpdateAsync(user);
+
+                TempData["Message"] = Utils.GenerateToastSuccess("Your account has been confirmed successfully. Please login to proceed");
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                TempData["Message"] = Utils.GenerateToastError("Invalid code. Please enter a valid activation code");
+                return View();
+            }
+
+            return View();
+        }
+        
+        /*[AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmailOriginal(string userId, string code)
+        {
+            Session["RegisterViewModelComplete"] = null;
             if (userId == null || code == null)
             {
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
+        }*/
 
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            Session["RegisterViewModelComplete"] = null;
             return View();
         }
 
@@ -256,6 +671,7 @@ namespace E_Vote_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            Session["RegisterViewModelComplete"] = null;
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
@@ -282,6 +698,7 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            Session["RegisterViewModelComplete"] = null;
             return View();
         }
 
@@ -290,6 +707,7 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
+            Session["RegisterViewModelComplete"] = null;
             return code == null ? View("Error") : View();
         }
 
@@ -300,6 +718,7 @@ namespace E_Vote_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            Session["RegisterViewModelComplete"] = null;
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -324,6 +743,7 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            Session["RegisterViewModelComplete"] = null;
             return View();
         }
 
@@ -334,6 +754,7 @@ namespace E_Vote_System.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            Session["RegisterViewModelComplete"] = null;
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
@@ -343,6 +764,7 @@ namespace E_Vote_System.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
+            Session["RegisterViewModelComplete"] = null;
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
@@ -360,6 +782,7 @@ namespace E_Vote_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
+            Session["RegisterViewModelComplete"] = null;
             if (!ModelState.IsValid)
             {
                 return View();

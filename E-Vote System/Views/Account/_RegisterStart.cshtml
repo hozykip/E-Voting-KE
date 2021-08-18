@@ -1,0 +1,119 @@
+﻿
+
+@model E_Vote_System.Models.RegisterViewModelStart
+
+
+
+@if (Model != null)
+{
+    using (Html.BeginForm("RegisterStart", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "md-float-material form-material RegistrationForm", role = "form", @id = "RegistrationFormStart" }))
+    {
+
+        <div class="form-group">
+            @Html.AntiForgeryToken()
+        </div>
+
+
+
+        <div class="text-center">
+            <img src="/Content/imgs/logo.png" alt="logo.png">
+        </div>
+        <div class="auth-box card">
+
+            <div class="card-block">
+                <div class="row m-b-20">
+                    <div class="col-md-12">
+                        <h3 class="text-center text-uppercase">Register Account</h3>
+                        <p>Please enter your registered Email Address.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group form-primary">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            <span class="form-bar"></span>
+                            @Html.LabelFor(m => m.Email, new { @class = "float-label" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col d-flex justify-content-end">
+                        <button class="btn btn-danger">Register</button>
+                    </div>
+                </div>
+
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-10">
+                        <p class="text-inverse text-left m-b-0">Thank you.</p>
+                        <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p>
+                    </div>
+                    <div class="col-md-2">
+                        <img src="/Content/Materialable/assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    }
+
+}
+
+<script>
+    $('.RegistrationForm').on('submit', function (e) {
+        e.preventDefault();
+    }).validate({
+        submitHandler: function (form) {
+
+            let url = $(form).attr('action');
+
+            @* let id = $(form).attr('id');*@
+
+            let fd = new FormData();
+
+            $(form).find('.frm_input').each(function (i, e) {
+                fd.append($(e).attr('name'), $(e).val())
+            });
+
+            $.ajax({
+                url,
+                method: 'POST',
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    $('.reg_form_container').html(res);
+
+                    $('.RegistrationForm').removeData('validator');
+                    $('.RegistrationForm').removeData('unobtrusiveValidation');
+                    $.validator.unobtrusive.parse('.RegistrationForm');
+                },
+                error: function (err) {
+                    let error = GenerateToastError(err.statusText);
+
+                    toastrAlert(error);
+                }
+            })
+        }
+    });
+</script>
+
+
+@if (ViewBag.Message != null)
+{
+    <script>
+            toastrAlert("@ViewBag.Message");
+    </script>
+}

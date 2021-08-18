@@ -1,0 +1,137 @@
+﻿@using E_Vote_System.Models
+@model E_Vote_System.Models.RegisterViewModelComplete
+@{
+    ViewBag.Title = "Set Password";
+    Layout = "~/Views/Shared/_MaterialableLogin.cshtml";
+}
+
+
+
+@section Styles{
+    <style>
+        .auth-box {
+            max-width: unset !important;
+        }
+    </style>
+}
+
+<div class="reg_form_container">
+    @if (Model != null)
+    {
+        using (Html.BeginForm("RegisterViewModelComplete", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "md-float-material form-material RegistrationForm", role = "form", @id = "RegistrationFormComplete" }))
+        {
+
+            <div class="form-group">
+                @Html.AntiForgeryToken()
+            </div>
+
+            @Html.HiddenFor(m => m.Email)
+            @Html.HiddenFor(m => m.FirstName)
+            @Html.HiddenFor(m => m.LastName)
+
+            <div class="text-center">
+                <img src="/Content/imgs/logo.png" alt="logo.png">
+            </div>
+            <div class="auth-box card">
+
+                <div class="card-block">
+                    <div class="row m-b-20">
+                        <div class="col-md-12">
+                            <h3 class="text-center text-uppercase">Register Account</h3>
+                            <p>Welcome @Model.GetFullName() . Please set your password.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group form-primary">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                <span class="form-bar"></span>
+                                @Html.LabelFor(m => m.Password, new { @class = "float-label" })
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group form-primary">
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                <span class="form-bar"></span>
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "float-label" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <button class="btn btn-danger">Set Password</button>
+                        </div>
+                    </div>
+
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-10">
+                            <p class="text-inverse text-left m-b-0">Thank you.</p>
+                            <p class="text-inverse text-left"><a href="@Url.Action("Login","Account")"><b>Back to website</b></a></p>
+                        </div>
+                        <div class="col-md-2">
+                            <img src="/Content/Materialable/assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        }
+
+
+    }
+</div>
+
+
+
+
+
+
+
+
+
+
+@section Scripts{
+    <script>
+
+        @*function submitRegForm(e) {
+
+            alert('submittting this');
+
+            return false;
+        }
+
+
+        $('.RegistrationForm').on('submit',  function (e) {
+            e.preventDefault();
+        }).validate({
+            submitHandler: function (form) {
+
+                $(form).submit();
+
+                
+            }
+        });*@
+
+
+    </script>
+}
+
+
+
+
+

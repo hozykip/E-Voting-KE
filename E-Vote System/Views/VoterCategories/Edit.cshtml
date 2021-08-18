@@ -1,0 +1,82 @@
+﻿@model E_Vote_System.Models.ViewModels.VoterCategoryViewModel
+
+@{
+    ViewBag.Title = "Edit voter category";
+    ViewBag.PageTitle = "Edit voter category";
+    ViewBag.PageSubTitle = "Voter Category Form";
+}
+
+
+
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Voter Categories", "Index", "VoterCategories")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>Voter Category Form</span>
+    </div>
+    <div class="card-block table-border-style">
+
+
+        @using (Html.BeginForm("Edit", "VoterCategories", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+        {
+            @Html.AntiForgeryToken()
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group mb-2">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "mr-2" })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+
+            
+
+            <div class="form-group mx-sm-3 mb-2">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "mr-2" })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-2">
+                <input type="submit" value="Update" class="btn btn-primary btn-sm" />
+            </div>
+
+        }
+
+
+
+        <hr class="mt-3" />
+        <div class="d-flex justify-content-start">
+            <a href="@Url.Action("Index")" class="btn btn-sm btn-outline-dark">
+                <i class="fa fa-list-ol"></i>
+                Back to List
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

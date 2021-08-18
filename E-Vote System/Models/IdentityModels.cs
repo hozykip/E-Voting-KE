@@ -17,14 +17,14 @@ namespace E_Vote_System.Models
     {
         [Required]
         [Display(Name = "First Name")]
-        public string  FirstName { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = "Last Name")] 
-        public string  LastName { get; set; }
-        
-        [Display(Name = "Address")] 
-        public string  Address { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
 
         public string ProfilePicture { get; set; }
 
@@ -33,6 +33,7 @@ namespace E_Vote_System.Models
         public DateTime DateCreated { get; set; }
         [Display(Name = "Date Modified")]
         public DateTime? DateModified { get; set; }
+        public string OTP { get; set; }
 
         public List<ElectionModel> ElectionModels { get; set; }
 
@@ -41,12 +42,12 @@ namespace E_Vote_System.Models
         [NotMapped]
         public string FullName { get { return GetFullName(); } }
 
+        public List<VoterModel> Voters { get; set; }
 
         public string GetFullName()
         {
             try
             {
-
                 return this.FirstName + " " + this.LastName;
 
             }catch(Exception e)
@@ -55,6 +56,22 @@ namespace E_Vote_System.Models
                 return null;
             }
         }
+
+        /*public bool HasRole(string roleName)
+        {
+            bool flag = false;
+
+            try
+            {
+                this.HasRole(roleName);
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+            }
+
+            return flag;
+        }*/
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -81,6 +98,9 @@ namespace E_Vote_System.Models
             modelBuilder.Entity<ElectionPositionModel>().ToTable("tb_ElectionPositions");
             modelBuilder.Entity<ElectionCandidateModel>().ToTable("tb_ElectionCandidates");
             modelBuilder.Entity<VoteModel>().ToTable("tb_Votes");
+            modelBuilder.Entity<VoterModel>().ToTable("tb_Voters");
+            modelBuilder.Entity<NotificationModel>().ToTable("tb_Notifications");
+            modelBuilder.Entity<VoterCategoryModel>().ToTable("tb_VoterCategories");
         }
 
         public static ApplicationDbContext Create()
@@ -93,5 +113,10 @@ namespace E_Vote_System.Models
         public DbSet<ElectionPositionModel> ElectionPositionModels { get; set; }
         public DbSet<ElectionCandidateModel> ElectionCandidateModels { get; set; }
         public DbSet<VoteModel> VoteModels { get; set; }
+        public DbSet<VoterModel> VoterModels { get; set; }
+        public DbSet<NotificationModel> NotificationModels { get; set; }
+        public DbSet<VoterCategoryModel> VoterCategoryModels { get; set; }
+
+        //public System.Data.Entity.DbSet<E_Vote_System.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

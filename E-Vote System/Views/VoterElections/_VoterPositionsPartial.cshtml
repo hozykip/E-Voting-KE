@@ -1,0 +1,82 @@
+﻿@model IEnumerable<E_Vote_System.Models.ElectionPositionModel>
+
+@{
+    List<E_Vote_System.Models.VoteModel> votes = ViewBag.Votes as List<E_Vote_System.Models.VoteModel>;
+}
+
+@if (Model != null)
+{
+
+    foreach (var item in Model)
+    {
+        bool votedPosition = false;
+
+        if (votes != null)
+        {
+            votedPosition = votes.Any(v => v.Candidate.PositionId == item.Id);
+        }
+
+        using (Html.BeginForm("Vote", "VoterElections", FormMethod.Post, new { @class = votedPosition || item.ElectionCandidateModels.Count == 0 ? "" : "voter_form", data_candidates_count = item.ElectionCandidateModels.Count }))
+        {
+
+            @Html.AntiForgeryToken()
+
+            @Html.Hidden("ElectionId", item.ElectionId, new { @class = "frm_input" })
+            @Html.Hidden("PositionId", item.Id, new { @class = "frm_input" })
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>@ViewBag.Title</h5>
+
+                    <h4>Position : @item.Position</h4>
+                    <p>Vote for your candidate in this position</p>
+
+                    <div class="alert alert-danger d-none message_box"></div>
+
+                    <div class="alert alert-success d-none message_box_success"></div>
+
+                    @if (votedPosition)
+                    {
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i> You have already submitted your vote for this position
+                        </div>
+                    }
+
+                    <div class="card-header-right">
+
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="card-block p-5 row">
+
+                        @if (item.ElectionCandidateModels.Count == 0)
+                        {
+                            <div class="alert alert-danger">This poistion has no candidates set</div>
+                        }
+                        else
+                        {
+                            foreach (E_Vote_System.Models.ElectionCandidateModel candidate in item.ElectionCandidateModels)
+                            {
+                                @Html.Partial("_SingleCandidate", candidate)
+                            }
+                        }
+
+                    </div>
+                </div>
+                
+            </div>
+
+        }
+    }
+
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary submit_votes_btn"><i class="fa fa-send"></i> Cast Vote</button>
+    </div>
+
+}
+
+

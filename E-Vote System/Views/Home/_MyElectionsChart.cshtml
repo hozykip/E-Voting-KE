@@ -1,0 +1,47 @@
+﻿@if (ViewBag.NotVotedIn != null && ViewBag.VotedIn != null)
+{
+    double VotedIn = ViewBag.VotedIn;
+    double NotVotedIn = ViewBag.NotVotedIn;
+
+
+
+    <div class="col-xl-6 col-md-12">
+        <div class="card mat-stat-card">
+            <div class="card-header">
+                <h5>Elections chart</h5>
+                <span>A summary of elections you have participated in against those you did not.</span>
+            </div>
+            <div class="card-block">
+
+                @if (VotedIn == 0)
+                {
+                    <div class="alert alert-danger">You have not participated in any election so far. Please ensure you don't miss upcoming elections'</div>
+
+                    <p>Please check the <a href="@Url.Action("Index","VoterElections")">elections list</a> to see if there are any open elections you can participate in</p>
+
+                    <p>You will be notified of upcoming elections via this portal. <em>Stay vigilant </em><span style='font-size:24px;'>&#128521;</span></p>
+                }
+                else
+                {
+                    <div class="election_chart" id="election_summary_container" data-labels="Elections I participated in,Elections I did not participate in" data-series="@VotedIn,@NotVotedIn"></div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">@Configs.DefaultErrorMessage</div>
+}
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        toastrAlert("@ViewBag.Message");
+    </script>
+}
+
+

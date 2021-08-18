@@ -48,7 +48,14 @@ namespace E_Vote_System.Helper_Code.Common
                 string extension = Path.GetExtension(file.FileName).Substring(1);
 
                 // Settings.
-                List<string> extensionsList = FileExtensions.Split(',').ToList();
+
+                List<string> lowercase = FileExtensions.Split(',').ToList().Select(y => y.ToLower()).ToList();
+                List<string> upperCase = FileExtensions.Split(',').ToList().Select(y => y.ToUpper()).ToList();
+
+                List<string> extensionsList = new List<string>();
+
+                extensionsList.AddRange(lowercase);
+                extensionsList.AddRange(upperCase);
 
 
                 isValid = fileSize <= allowedFileSize && extensionsList.Contains(extension);

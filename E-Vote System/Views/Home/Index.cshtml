@@ -1,33 +1,383 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home";
+}
+
+@section BreadCrumbs{
+
+
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+@if (User.IsInRole("Voter"))
+{
+    <div class="row voter_notifications_list" data-url="@Url.Action("VoterNotificationsListPartial")">
+        @Html.Action("VoterNotificationsListPartial")
+    </div>
 }
 
 
-<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Seems like you are not registered as a supplier</div>
+
+
+
+<div class="row">
+    @Html.Action("ElectionSummaries")
+</div>
+
+@if (User.IsInRole("Administrator"))
+{
+    <div class="row">
+
+        <div class="col-xl-6 col-md-12">
+            <div class="card table-card">
+                <div class="card-header">
+                    <h5>Create a notification</h5>
+                    <div class="card-header-right">
+                        <ul class="list-unstyled card-option">
+                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                            <li><i class="fa fa-window-maximize full-card"></i></li>
+                            <li><i class="fa fa-minus minimize-card"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-block px-4">
+
+                    <form action="@Url.Action("CreateNotification")" method="post" class="" id="notification_form">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Title</label>
+                                <input type="text" name="title" value="" class="form-control frm_input" required placeholder="Notification title" maxlength="75" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Message</label>
+                                <textarea class="form-control frm_input" rows="5" cols="5" name="message" placeholder="Message" required></textarea>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Start Time</label>
+                                <input type="datetime-local" class="form-control frm_input" name="start" value="" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label>End Time</label>
+                                <input type="datetime-local" class="form-control frm_input" name="end" value="" required />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row px-3 d-flex justify-content-end">
+                            <button class="btn btn-round btn-danger btn-sm" type="submit">Submit</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-6 col-md-12 admin_notifications_list" data-url="@Url.Action("AdminNotificationsPartial")">
+            @Html.Action("AdminNotificationsPartial")
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+        @Html.Action("VotersChartPartial")
+
+        @Html.Action("AdminstratorsListPartial")
+    </div>
+}
+
+
 
 <div class="row">
 
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>Instructions</h5>
-                <span>You are not registered as a supplier.</span>
-            </div>
 
-            <div class="card-block">
-                <p>
-                    Sorry we could not find your supplier information. If you had registered previously, please contact the administrator for further assistance.
-                </p>
-                <p>
-                    You can also click the button below to register your details.
-                </p>
-                @*<a href="@Url." class="btn btn-danger btn-sm">Register as a supplier</a>*@
-                
-                @Html.ActionLink("Register as a supplier", "RegisterSupplier", null, new { @class = "btn btn-danger btn-sm" })
-            </div>
+    @if (User.IsInRole("Voter"))
+    {
+        <div class="col-xl-6 col-md-12">
+            <div class="card mat-stat-card">
+                <div class="card-header">
+                    <h5>Welcome to @Configs.CompanyName</h5>
+                    <span>Your online voting portal</span>
+                </div>
+                <div class="card-block">
 
+                    <p>
+                        This is an online voting and elections management system. As a voter you will be able to see all elections, vote for your favorite candidates in the active elections and see the results of all the elections.
+                    </p>
+                    <p>
+                        We are committed to ensure <b>transparency</b>, <b>ease</b> and <b>security</b> of elections and voting exercise.
+                    </p>
+
+                </div>
+            </div>
         </div>
-    </div>
+        @Html.Action("MyElectionsChart")
+    }
 
-    
+
+
+
 </div>
+
+
+@section Styles{
+    <style>
+        .election_chart, .voter_chart {
+            width: 100%;
+            height: 300px;
+        }
+
+        b {
+            font-weight: bold
+        }
+    </style>
+}
+
+
+@section Scripts{
+    <script>
+
+
+        $("#notification_form").on('submit', function (e) {
+            e.preventDefault();
+        }).validate({
+
+            submitHandler: function (form) {
+
+                let fd = new FormData();
+
+                $(form).find('.frm_input').each(function (i, e) {
+                    fd.append($(e).attr('name'), $(e).val());
+                });
+
+                let url = $(form).attr('action');
+
+                $.ajax({
+
+                    url,
+                    method: 'POST',
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: showLoader,
+                    complete: hideLoader,
+
+                    success: function (res) {
+
+                        let data = res.data;
+                        let status = res.status;
+                        let message = res.message;
+
+
+
+                        if (status == ApiStatusCodes.SUCCESS) {
+
+                            message = GenerateToastSuccess(message);
+
+                            let adminNotifications = $('.admin_notifications_list');
+                            let voterNotifications = $('.voter_notifications_list');
+
+                            LoadHtmlToPage(adminNotifications, adminNotifications.data("url"));                            
+
+                            if (voterNotifications.length > 0) {
+                                LoadHtmlToPage(voterNotifications, voterNotifications.data("url"));
+                            }
+
+
+                            toastrAlert(message);
+
+                            $("#notification_form")[0].reset();
+
+                            hideLoader();
+                        } else {
+
+                            message = GenerateToastError(message);
+
+                            toastrAlert(message);
+                        }
+
+                    },
+                    error: function (error) {
+                        var msg = GenerateToastError(error.statusText);
+
+                        toastrAlert(msg);
+                    }
+
+                });
+            }
+
+        });
+
+
+
+
+        am4core.addLicense("ch-custom-attribution");
+
+        if ($('#election_summary_container').length > 0) {
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+
+
+                var chart = am4core.create("election_summary_container", am4charts.PieChart);
+                chart.startAngle = 160;
+                chart.endAngle = 380;
+
+
+                // Let's cut a hole in our Pie chart the size of 40% the radius
+                chart.innerRadius = am4core.percent(40);
+
+                // Add data
+                chart.data = generateChartData($("#election_summary_container"));
+
+                //enable tooltip
+                var title = chart.titles.create();
+                title.text = "Election Summaries Chart";
+                title.fontSize = 18;
+                title.tooltipText = "Election Summaries";
+
+                //chart.cursor = new am4charts.XYCursor();
+
+
+                // Create series
+                var series = chart.series.push(new am4charts.PieSeries());
+                series.dataFields.value = "elections";
+                series.dataFields.category = "voter";
+
+                series.slices.template.stroke = new am4core.InterfaceColorSet().getFor("background");
+                series.slices.template.strokeWidth = 1;
+                series.slices.template.strokeOpacity = 1;
+                series.slices.template.states.getKey("hover").properties.shiftRadius = 0.05;
+                series.slices.template.states.getKey("hover").properties.scale = 1;
+
+                series.slices.template.propertyFields.fill = "color";
+
+                series.labels.template.disabled = true;
+                series.ticks.template.disabled = true;
+
+                var label = chart.seriesContainer.createChild(am4core.Label);
+                label.textAlign = "middle";
+                label.horizontalCenter = "middle";
+                label.verticalCenter = "middle";
+                label.adapter.add("text", function (text, target) {
+                    return "[font-size:18px]total[/]:\n[bold font-size:30px]" + series.dataItem.values.value.sum + "[/]";
+                })// add range
+
+
+
+
+            }); // end am4core.ready()
+        }
+
+
+        if ($('#voter_summary_container').length > 0) {
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+
+
+                var chart = am4core.create("voter_summary_container", am4charts.PieChart);
+                chart.startAngle = 160;
+                chart.endAngle = 380;
+
+
+                // Let's cut a hole in our Pie chart the size of 40% the radius
+                chart.innerRadius = am4core.percent(40);
+
+                // Add data
+                chart.data = generateVotersChartData($("#voter_summary_container"));
+
+                //enable tooltip
+                var title = chart.titles.create();
+                title.text = "Voter Registration Chart";
+                title.fontSize = 18;
+                title.tooltipText = "Voter Registrations";
+
+                //chart.cursor = new am4charts.XYCursor();
+
+
+                // Create series
+                var series = chart.series.push(new am4charts.PieSeries());
+                series.dataFields.value = "registrations";
+                series.dataFields.category = "voters";
+
+                series.slices.template.stroke = new am4core.InterfaceColorSet().getFor("background");
+                series.slices.template.strokeWidth = 1;
+                series.slices.template.strokeOpacity = 1;
+                series.slices.template.states.getKey("hover").properties.shiftRadius = 0.05;
+                series.slices.template.states.getKey("hover").properties.scale = 1;
+
+                series.slices.template.propertyFields.fill = "color";
+
+                series.labels.template.disabled = true;
+                series.ticks.template.disabled = true;
+
+                var label = chart.seriesContainer.createChild(am4core.Label);
+                label.textAlign = "middle";
+                label.horizontalCenter = "middle";
+                label.verticalCenter = "middle";
+                label.adapter.add("text", function (text, target) {
+                    return "[font-size:18px]total[/]:\n[bold font-size:30px]" + series.dataItem.values.value.sum + "[/]";
+                })// add range
+
+
+
+
+            }); // end am4core.ready()
+        }
+
+
+
+
+        function generateVotersChartData(elem) {
+            var chartData = [];
+
+            let labels = $(elem).data("labels").split(",");
+            let series = $(elem).data("series").split(",");
+
+            labels.forEach(function (item, index) {
+                chartData.push({
+                    voters: item,
+                    registrations: series[index],
+                    color: am4core.color(chartColors[index])
+                });
+            })
+
+            return chartData;
+        }
+
+        function generateChartData(elem) {
+            var chartData = [];
+
+            let labels = $(elem).data("labels").split(",");
+            let series = $(elem).data("series").split(",");
+
+            labels.forEach(function (item, index) {
+                chartData.push({
+                    voter: item,
+                    elections: series[index],
+                    color: am4core.color(chartColors[index])
+                });
+            })
+
+            return chartData;
+        }
+    </script>
+}
+

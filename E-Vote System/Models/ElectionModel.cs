@@ -26,6 +26,9 @@ namespace E_Vote_System.Models
         [Required]
         [Display(Name = "Closing Date")]
         public DateTime EndDate { get; set; }
+        [Required]
+        [Display(Name = "Voter Category")]
+        public int VoterCategoryId { get; set; }
 
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Display(Name = "Date Created")]
@@ -39,5 +42,6 @@ namespace E_Vote_System.Models
         public ApplicationUser Creator { get; set; }
 
         public List<ElectionPositionModel> ElectionPositionModels { get; set; }
+        public VoterCategoryModel VoterCategory { get; set; }
     }
 }

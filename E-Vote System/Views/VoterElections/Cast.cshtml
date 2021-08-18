@@ -1,0 +1,169 @@
+﻿@model E_Vote_System.Models.ElectionModel
+
+
+@{
+    ViewBag.Title = "Vote";
+    ViewBag.PageTitle = "Voting Page";
+    ViewBag.PageSubTitle = "Vote for your preferred candidate";
+}
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>@ViewBag.Title</h5>
+
+                    <span>All @ViewBag.Title</span>
+                    <div class="card-header-right">
+
+
+
+
+                    </div>
+                </div>
+                <div class="card-block">
+
+                    @Html.Partial("_ElectionDetailsPartial", Model)
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+
+            @Html.Action("VoterPositionsPartial", new { id = Model.Id })
+
+        </div>
+    </div>
+}
+
+
+
+@section scripts{
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+
+        $('.submit_votes_btn').on('click', function () {
+
+
+            let forms = $('.voter_form');
+
+            if (forms.length == 0) {
+                alert('No position votes to cast for this election');
+                return;
+            }
+
+            let isValid = true;
+
+            forms.each(function (i, e) {
+                $(e).find('.message_box').text('').slideUp('slow');
+                $(e).find('.message_box_success').text('').slideUp('slow');
+
+                let val = $(e).find('input[name="CandidateId"]:checked').val();
+
+                if (val == undefined && $(e).data('candidates-count') > 0) {
+
+                    $(e).find('.message_box').text('Please select a candidate for this position').removeClass('d-none').slideDown('slow');
+
+                    isValid = false;
+
+                }
+            });
+
+            if (!isValid) {
+                alert('Please check the form for errors before submitting.');
+            } else {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Submit Votes!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        forms.each(function (i, e) {
+
+                            let url = $(e).attr('action');
+
+                            $(e).find('.message_box').text('').slideUp('slow');
+
+                            let val = $(e).find('input[name="CandidateId"]:checked').val();
+
+                            let fd = new FormData();
+
+                            $(e).find('.frm_input').each(function (ix, ex) {
+                                fd.append($(ex).attr('name'), $(ex).val());
+
+                                console.log($(ex).attr('name'), $(ex).val())
+                            });
+
+
+                            $.ajax({
+                                url,
+                                method: 'POST',
+                                data: fd,
+                                processData: false,
+                                contentType: false,
+                                success: function (res) {
+                                    let status = res.status;
+                                    let message = res.message;
+
+                                    if (status == ApiStatusCodes.SUCCESS) {
+                                        $(e).find('.message_box_success').text(message).removeClass('d-none').slideDown('slow');
+                                    } else {
+                                        $(e).find('.message_box').text(message).removeClass('d-none').slideDown('slow');
+                                    }
+
+                                    //toastrAlert(message);
+                                },
+                                error: function (err) {
+                                    //toastrAlert(GenerateToastError(err.statusText, 'Vote Submission Failed'));
+                                    $(e).find('.message_box').text(err.statusText).removeClass('d-none').slideDown('slow');
+                                }
+                            })
+
+                        });
+
+                        Swal.fire(
+                            'Submitted!',
+                            'Your votes have been submitted successfully. Please check the form for any error.',
+                            'success'
+                        )
+                    }
+                })
+
+
+                
+            }
+
+        });
+
+    </script>
+}
+
+
+
+
+

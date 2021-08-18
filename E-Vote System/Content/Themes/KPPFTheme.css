@@ -11,6 +11,11 @@
     --secondary2-theme-faded: rgb(3 53 121 / 0.82);
 }
 
+a {
+    cursor: pointer;
+    color: var(--primary-theme);
+}
+
 .pcoded .pcoded-header[header-theme="theme1"] {
     background: var(--primary-theme);
 }
@@ -58,3 +63,7 @@ body[themebg-pattern="theme1"] {
         /*background-color: #11c15b;
     border-color: #11c15b;*/
     }
+
+select.form-control, select.form-control:focus, select.form-control:hover {
+    border: 1px solid #cccccc;
+}

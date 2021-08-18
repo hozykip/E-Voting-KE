@@ -1,0 +1,152 @@
+﻿@model E_Vote_System.Models.ViewModels.VoterModelEditViewModel
+
+
+
+@{
+    ViewBag.Title = "Edit Voter";
+    ViewBag.PageTitle = "Edit Voter";
+    ViewBag.PageSubTitle = "Voter Form";
+
+    SelectList voterCategories = ViewBag.VoterCategoryId as SelectList;
+}
+
+
+
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Voters List", "Index", "Voters")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>Election form</span>
+    </div>
+    <div class="card-block table-border-style">
+
+        @using (Html.BeginForm("Edit", "Voters", FormMethod.Post, htmlAttributes: new { @class = "", enctype="multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ProfilePicture)
+
+
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.IdNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.IdNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IdNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.VoterCategoryModelId, "Voter Category", htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownList("VoterCategoryModelId", voterCategories, null, htmlAttributes: new { @class = "form-control", required = true })
+                    @Html.ValidationMessageFor(model => model.VoterCategoryModelId, "", new { @class = "text-danger" })
+                </div>
+
+                @*<div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.VoterCategoryModelId, "VoterCategoryId", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.DropDownList("VoterCategoryId", null, htmlAttributes: new { @class = "form-control", required = true })
+                    @Html.ValidationMessageFor(model => model.VoterCategoryModelId, "", new { @class = "text-danger" })
+                </div>*@
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mx-sm-3 mb-2">
+                        @Html.LabelFor(model => model.ProfilePictureUpload, htmlAttributes: new { @class = "control-label" })
+                        <input type="file" name="ProfilePictureUpload" accept="image/jpeg,image/jpg,image/png" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.ProfilePictureUpload, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @if (!string.IsNullOrWhiteSpace(Model.ProfilePicture))
+                    {
+                        string profilePic = $"{Configs.DocumentsUrl}VoterImages/{Model.ProfilePicture}";
+
+                        <img src="@profilePic" class="img-fluid img-100 img-rounded" style="max-width: 300px;max-height: 300px" />
+                    }
+                </div>
+
+            </div>
+
+
+
+
+            <div class="form-group mb-2">
+                <input type="submit" value="Update" class="btn btn-primary btn-sm" />
+            </div>
+        }
+
+
+        <hr class="mt-3" />
+        <div class="d-flex justify-content-start">
+            <a href="@Url.Action("Index")" class="btn btn-sm btn-outline-dark">
+                <i class="fa fa-list-ol"></i>
+                Back to List
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

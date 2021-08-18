@@ -1,0 +1,37 @@
+﻿<div class="col-xl-6 col-md-12">
+    <div class="card table-card">
+        <div class="card-header">
+            <h5>Voter registration charts</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <div class="table-responsive">
+
+
+                @if (ViewBag.AllCount != null && ViewBag.RegisteredCount != null && ViewBag.UnregisteredCount != null)
+                {
+                    double registeredCount = ViewBag.RegisteredCount;
+                    double allCount = ViewBag.AllCount;
+                    double unregisteredCount = ViewBag.UnregisteredCount;
+
+                    <div class="voter_chart" id="voter_summary_container" data-labels="Voters registered in portal,Voters unregistered in portal" data-series="@registeredCount,@unregisteredCount"></div>
+
+                }
+                else
+                {
+                    <div class="alert alert-danger">Unable to fetch voter records</div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

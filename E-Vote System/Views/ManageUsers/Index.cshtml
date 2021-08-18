@@ -1,0 +1,165 @@
+﻿@model IEnumerable<E_Vote_System.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Users";
+    ViewBag.PageTitle = "Users";
+    ViewBag.PageSubTitle = "App Users List";
+}
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>All @ViewBag.Title</span>
+        <div class="card-header-right">
+
+
+            <a href="@Url.Action("Create")" class="btn btn-success btn-sm" title="Add election"><i class="fa fa-plus-circle text-white"></i> Add User</a>
+
+
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+
+        @if (Model != null && Model.ToList().Count > 0)
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover data-table">
+
+                    <thead>
+                        <tr>
+                            <td>
+                                Display Picture
+                            </td>
+
+                            <td>
+                                Full Name
+                            </td>
+                            <td>
+                                User Name
+                            </td>
+                            <td>
+                                Email
+                            </td>
+                            <td>
+                                Email Confirmed
+                            </td>
+                            <td>
+                                Phone Number
+                            </td>
+                            <td>
+                                Address
+                            </td>
+
+                            <td>
+                                Date Created
+                            </td>
+                            <td>
+                                Date Modified
+                            </td>
+                            <td>
+                                Roles
+                            </td>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole> roles = ViewBag.roles as List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr class="delete_ancestor">
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ProfilePicture))
+                                    {
+                                        string profile = Configs.DocumentsUrl + item.ProfilePicture;
+                                        <img src="@profile" class="img" height="120px" />
+                                    }
+                                    else
+                                    {
+
+
+                                    }
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @if (item.EmailConfirmed)
+                                    {
+                                        <span class="badge badge-inverse-success">Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-inverse-danger">Pending</span>
+
+                                    }
+                                </td>
+                                <td>
+                                    @item.PhoneNumber
+                                </td>
+                                <td>
+                                    @item.Address
+                                </td>
+
+                                <td>
+                                    @Utils.FormatDate(item.DateCreated)
+                                </td>
+                                <td>
+                                    @Utils.FormatDate(item.DateModified)
+                                </td>
+                                <td>
+                                    @foreach (var role in item.Roles)
+                                    {
+                                        if (roles != null && roles.FirstOrDefault(r => r.Id == role.RoleId) != null)
+                                        {
+                                            <span class="badge badge-info mr-1">@roles.FirstOrDefault(r => r.Id == role.RoleId).Name</span>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="@Url.Action("Index", "ElectionPositionModels", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-list-alt"></i> Positions</a>
+                                    <a href="@Url.Action("Election","Stats", new { id = item.Id })" class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-chart-area"></i> Details</a>
+                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger mb-2 delete_ajax"><i class="fa fa-trash"></i> Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">No @ViewBag.Title</div>
+        }
+
+    </div>
+</div>
+

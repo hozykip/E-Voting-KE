@@ -1,0 +1,42 @@
+﻿@model E_Vote_System.Models.ElectionPositionModel
+
+@if (ViewBag.Message != null) {
+    <div class="alert alert-danger">
+        <i class="fa fa-exclamation-circle"></i> @ViewBag.Message
+    </div>
+}
+
+@if (Model != null)
+{
+
+    List<E_Vote_System.Models.ElectionCandidateModel> candidates =  ViewBag.Candidates as List<E_Vote_System.Models.ElectionCandidateModel>;
+
+    var votes = 0;
+
+    if(candidates != null)
+    {
+        votes = candidates.Sum(c => c.Votes.Count);
+    }
+
+    <div class="text-center">
+        <table class="table table-borderless table-centralised">
+            <tbody>
+                <tr>
+                    <th class="font-weight-bold text-right">Position:</th>
+                    <td class="text-left pl-1">@Model.Position</td>
+                </tr>
+                <tr>
+                    <th class="font-weight-bold text-right">Candidates:</th>
+                    <td class="text-left pl-1">@candidates.Count</td>
+                </tr>
+                <tr>
+                    <th class="font-weight-bold text-right">Votes Cast:</th>
+                    <td class="text-left pl-1">@votes</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+
+

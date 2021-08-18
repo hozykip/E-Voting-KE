@@ -1,0 +1,62 @@
+﻿
+@model List<E_Vote_System.Models.NotificationModel>
+
+
+<div class="card table-card">
+    <div class="card-header">
+        <h5>Notifications List</h5>
+        <div class="card-header-right">
+            <ul class="list-unstyled card-option">
+                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                <li><i class="fa fa-window-maximize full-card"></i></li>
+                <li><i class="fa fa-minus minimize-card"></i></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-block clearfix notification_holder">
+        <div class="table-responsive">
+
+            @if (Model != null)
+            {
+                <table class="table table-hover m-b-0 without-header">
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="delete_ancestor">
+                                <td>
+                                    <div class="d-inline-block align-middle">
+                                        <i class="fa fa-bell-o m-r-15 align-top"></i>
+                                        <div class="d-inline-block">
+                                            <h6>@item.Title</h6>
+                                            <p class="text-muted m-b-0">@item.Message</p>
+                                            <em>@Utils.FormatDate(item.StartDate)</em> - <em>@Utils.FormatDate(item.EndDate)</em>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <a href="@Url.Action("DeleteNotification", new { Id = item.Id })" class="f-w-700 delete_ajax"><i class="fas fa-trash text-c-red m-l-10"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <div class="alert alert-danger col-md-12">Unable to fetch notifications</div>
+            }
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        toastrAlert("@ViewBag.Message");
+    </script>
+}

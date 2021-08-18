@@ -1,0 +1,135 @@
+﻿@model IEnumerable<E_Vote_System.Models.ElectionModel>
+
+@{
+    ViewBag.Title = "Elections";
+    ViewBag.PageTitle = "Elections";
+    ViewBag.PageSubTitle = "Election List";
+}
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>All @ViewBag.Title</span>
+        <div class="card-header-right">
+
+
+
+
+
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+
+        @if (Model != null && Model.ToList().Count > 0)
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover data-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Type.Type)
+                            </th>
+                            @*<th>
+                                    Created By
+                                </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.StartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EndDate)
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateCreated)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateModified)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="delete_ancestor">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type.Type)
+                                </td>
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.Creator.FullName)
+                                    </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @if (item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now)
+                                    {
+                                        <span class="badge badge-success">Active</span>
+                                    }
+                                    else if (item.StartDate > DateTime.Now)
+                                    {
+
+                                        <span class="badge badge-warning">Upcoming</span>
+                                    }
+                                    else if (item.EndDate < DateTime.Now)
+                                    {
+                                        <span class="badge badge-danger">Closed</span>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateModified)
+                                </td>
+                                <td>
+                                    @if (item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now)
+                                    {
+                                        <a href="@Url.Action("Cast", "VoterElections", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-send"></i> Vote</a>
+                                    }
+                                    <a href="@Url.Action("Election","Stats", new { id = item.Id })" class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-chart-area"></i> Details</a>
+                                    @*<a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger mb-2 delete_ajax"><i class="fa fa-trash"></i> Details</a>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">No @ViewBag.Title</div>
+        }
+
+    </div>
+</div>

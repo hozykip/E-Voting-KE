@@ -20,7 +20,7 @@ namespace E_Vote_System.Controllers
         // GET: Elections
         public async Task<ActionResult> Index()
         {
-            var electionModels = db.ElectionModels.Include(e => e.Creator).Include(e => e.Type);
+            var electionModels = db.ElectionModels.Include(e => e.Creator).Include(e => e.Type).Include(e => e.VoterCategory);
             return View(await electionModels.ToListAsync());
         }
 
@@ -44,6 +44,7 @@ namespace E_Vote_System.Controllers
         {
             ViewBag.CreatedBy = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TypeId = new SelectList(db.ElectionTypes, "Id", "Type");
+            ViewBag.CategoryId = new SelectList(db.VoterCategoryModels, "Id", "Name");
             return View();
         }
 
@@ -52,14 +53,12 @@ namespace E_Vote_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,TypeId,CreatedBy,Name,StartDate,EndDate,DateCreated,DateModified")] ElectionModel electionModel)
-        {            
+        public async Task<ActionResult> Create([Bind(Include = "Id,TypeId,VoterCategoryId,CreatedBy,Name,StartDate,EndDate,DateCreated,DateModified")] ElectionModel electionModel)
+        {           
 
             try
             {
-                var user = Utils.GetCurrentUser();
-
-                
+                var user = Utils.GetCurrentUser();                
 
                 if (ModelState.IsValid)
                 {
@@ -79,6 +78,7 @@ namespace E_Vote_System.Controllers
 
                 ViewBag.CreatedBy = new SelectList(db.Users, "Id", "FirstName", electionModel.CreatedBy);
                 ViewBag.TypeId = new SelectList(db.ElectionTypes, "Id", "Type", electionModel.TypeId);
+                ViewBag.CategoryId = new SelectList(db.VoterCategoryModels, "Id", "Name");
             }
             catch(Exception e)
             {
@@ -114,11 +114,13 @@ namespace E_Vote_System.Controllers
                     Name = electionModel.Name,
                     Type = electionModel.Type,
                     TypeId = electionModel.TypeId,
-                    Id = electionModel.Id
+                    Id = electionModel.Id,
+                    VoterCategoryId = electionModel.VoterCategoryId
                 };
 
                 ViewBag.CreatedBy = new SelectList(db.Users, "Id", "FirstName", electionModel.CreatedBy);
                 ViewBag.TypeId = new SelectList(db.ElectionTypes, "Id", "Type", electionModel.TypeId);
+                ViewBag.CategoryId = new SelectList(db.VoterCategoryModels, "Id", "Name");
 
             }
             catch(Exception e)
@@ -135,7 +137,7 @@ namespace E_Vote_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,TypeId,CreatedBy,Name,StartDate,EndDate,DateCreated,DateModified")] ElectionEditViewModel model, FormCollection form)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,TypeId,CreatedBy,Name,StartDate,EndDate,DateCreated,DateModified,VoterCategoryId")] ElectionEditViewModel model, FormCollection form)
         {
             try
             {
@@ -153,6 +155,7 @@ namespace E_Vote_System.Controllers
                     electionModel.StartDate = Start;
                     electionModel.EndDate = End;
                     electionModel.TypeId = model.TypeId;
+                    electionModel.VoterCategoryId = model.VoterCategoryId;
 
                     db.Entry(electionModel).State = EntityState.Modified;
                     await db.SaveChangesAsync();
@@ -171,7 +174,9 @@ namespace E_Vote_System.Controllers
             {
                 ViewBag.CreatedBy = new SelectList(db.Users, "Id", "FirstName", model.CreatedBy);
                 ViewBag.TypeId = new SelectList(db.ElectionTypes, "Id", "Type", model.TypeId);
-            }catch(Exception e)
+                ViewBag.CategoryId = new SelectList(db.VoterCategoryModels, "Id", "Name");
+            }
+            catch(Exception e)
             {
                 Utils.LogException(e);
                 TempData["Message"] = Utils.GenerateToastError($"Election not updated", "Edit Election");

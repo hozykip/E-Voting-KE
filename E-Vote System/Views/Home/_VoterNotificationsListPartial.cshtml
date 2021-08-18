@@ -1,0 +1,37 @@
+﻿
+
+@model List<E_Vote_System.Models.NotificationModel>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+<div class="alert alert-success alert-inverse col-md-12 ">
+    <div class="alert-heading "><i class="fa fa-bell-o alert-icon m-r-10"></i>@item.Title</div>
+
+    <p class="">@item.Message</p>
+
+    @*<div>
+        <h6>@item.Title</h6>
+
+    </div>*@
+
+</div>
+
+
+    }
+
+}
+else
+{
+    <div class="alert alert-danger col-md-12">Unable to fetch notifications</div>
+}
+
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        toastrAlert("@ViewBag.Message");
+    </script>
+}

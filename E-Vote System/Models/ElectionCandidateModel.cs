@@ -58,5 +58,24 @@ namespace E_Vote_System.Models
         public ElectionPositionModel ElectionPositionModel { get; set; }
 
         public List<VoteModel> Votes { get; set; }
+
+        [NotMapped]
+        public string FullName { get { return GetFullName(); } }
+
+
+        private string GetFullName()
+        {
+            try
+            {
+
+                return this.SurName + " " + this.FirstName + " " + this.OtherName;
+
+            }
+            catch (Exception e)
+            {
+                Utils.LogException(e);
+                return null;
+            }
+        }
     }
 }

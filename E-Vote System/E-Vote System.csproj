@@ -197,6 +197,11 @@
     <Compile Include="Controllers\ElectionTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManageUsersController.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
+    <Compile Include="Controllers\VoterCategoriesController.cs" />
+    <Compile Include="Controllers\VoterElectionsController.cs" />
+    <Compile Include="Controllers\VotersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -261,6 +266,50 @@
     <Compile Include="Migrations\202108011455003_optional-created-by-election.Designer.cs">
       <DependentUpon>202108011455003_optional-created-by-election.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108110648383_add-testfield-to-users.cs" />
+    <Compile Include="Migrations\202108110648383_add-testfield-to-users.Designer.cs">
+      <DependentUpon>202108110648383_add-testfield-to-users.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108110650040_remove-testfield-to-users.cs" />
+    <Compile Include="Migrations\202108110650040_remove-testfield-to-users.Designer.cs">
+      <DependentUpon>202108110650040_remove-testfield-to-users.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108152206244_votermodel.cs" />
+    <Compile Include="Migrations\202108152206244_votermodel.Designer.cs">
+      <DependentUpon>202108152206244_votermodel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108162202070_userotp.cs" />
+    <Compile Include="Migrations\202108162202070_userotp.Designer.cs">
+      <DependentUpon>202108162202070_userotp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108170941499_notificationModel.cs" />
+    <Compile Include="Migrations\202108170941499_notificationModel.Designer.cs">
+      <DependentUpon>202108170941499_notificationModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108170943547_notificationModel_dates.cs" />
+    <Compile Include="Migrations\202108170943547_notificationModel_dates.Designer.cs">
+      <DependentUpon>202108170943547_notificationModel_dates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108171002444_notificationModel_title.cs" />
+    <Compile Include="Migrations\202108171002444_notificationModel_title.Designer.cs">
+      <DependentUpon>202108171002444_notificationModel_title.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108171804028_VoterCategories.cs" />
+    <Compile Include="Migrations\202108171804028_VoterCategories.Designer.cs">
+      <DependentUpon>202108171804028_VoterCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108180543151_VoterProfile.cs" />
+    <Compile Include="Migrations\202108180543151_VoterProfile.Designer.cs">
+      <DependentUpon>202108180543151_VoterProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108180733568_VoterModel-ForeignKey.cs" />
+    <Compile Include="Migrations\202108180733568_VoterModel-ForeignKey.Designer.cs">
+      <DependentUpon>202108180733568_VoterModel-ForeignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108181206305_VoterModel-UniqueUserIdEmail.cs" />
+    <Compile Include="Migrations\202108181206305_VoterModel-UniqueUserIdEmail.Designer.cs">
+      <DependentUpon>202108181206305_VoterModel-UniqueUserIdEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DefaultJsonResponse.cs" />
@@ -270,13 +319,20 @@
     <Compile Include="Models\ElectionTypes.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\ResultCodes.cs" />
+    <Compile Include="Models\ViewModels\CastVoteViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionCandidateCreateViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionCandidateEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionPositionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionTypesViewModels.cs" />
+    <Compile Include="Models\ViewModels\VoterCategoryViewModel.cs" />
+    <Compile Include="Models\ViewModels\VoterModelEditViewModel.cs" />
+    <Compile Include="Models\ViewModels\VoterModelViewModel.cs" />
     <Compile Include="Models\VoteModel.cs" />
+    <Compile Include="Models\VoterCategoryModel.cs" />
+    <Compile Include="Models\VoterModel.cs" />
     <Compile Include="MyDbSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -504,7 +560,11 @@
     <Content Include="Content\imgs\avatar-2.jpg" />
     <Content Include="Content\imgs\breadcrumb-bg.jpg" />
     <Content Include="Content\imgs\favicon.png" />
+    <Content Include="Content\imgs\favicon2.png" />
+    <Content Include="Content\imgs\favicon3.png" />
     <Content Include="Content\imgs\logo.png" />
+    <Content Include="Content\imgs\logo2.png" />
+    <Content Include="Content\imgs\logo3.png" />
     <Content Include="Content\imgs\Ripple-1s-200px-small.gif" />
     <Content Include="Content\imgs\Ripple-1s-200px.gif" />
     <Content Include="Content\lineawesome1.3.0\css\line-awesome.css" />
@@ -2645,6 +2705,42 @@
     <Content Include="Views\Candidates\Details.cshtml" />
     <Content Include="Views\Candidates\Edit.cshtml" />
     <Content Include="Views\Candidates\Index.cshtml" />
+    <Content Include="Views\VoterElections\Details.cshtml" />
+    <Content Include="Views\VoterElections\Index.cshtml" />
+    <Content Include="Views\VoterElections\Active.cshtml" />
+    <Content Include="Views\VoterElections\Closed.cshtml" />
+    <Content Include="Views\VoterElections\Cast.cshtml" />
+    <Content Include="Views\VoterElections\_VoterPositionsPartial.cshtml" />
+    <Content Include="Views\VoterElections\_SingleCandidate.cshtml" />
+    <Content Include="Views\VoterElections\_ElectionDetailsPartial.cshtml" />
+    <Content Include="Views\Stats\Election.cshtml" />
+    <Content Include="Views\Stats\_PositionDetailsPartial.cshtml" />
+    <Content Include="Views\Stats\_PositionChartPartial.cshtml" />
+    <Content Include="Views\Stats\_CandidateVotesPartial.cshtml" />
+    <Content Include="Views\Stats\CandidateVotes.cshtml" />
+    <Content Include="Views\ManageUsers\Index.cshtml" />
+    <Content Include="Views\Account\Register - Copy %282%29.cshtml" />
+    <Content Include="Views\Account\_RegisterComplete.cshtml" />
+    <Content Include="Views\Account\_RegisterStart.cshtml" />
+    <Content Include="Views\Voters\Create.cshtml" />
+    <Content Include="Views\Voters\Delete.cshtml" />
+    <Content Include="Views\Voters\Details.cshtml" />
+    <Content Include="Views\Voters\Edit.cshtml" />
+    <Content Include="Views\Voters\Index.cshtml" />
+    <Content Include="Views\Account\RegisterViewModelComplete.cshtml" />
+    <Content Include="Views\Shared\_SideBarAdminPartial.cshtml" />
+    <Content Include="Views\Shared\_SideBarVoterPartial.cshtml" />
+    <Content Include="Views\Home\_ElectionSummaries.cshtml" />
+    <Content Include="Views\Home\_MyElectionsChart.cshtml" />
+    <Content Include="Views\Home\_AdminstratorsListPartial.cshtml" />
+    <Content Include="Views\Home\_VotersChartPartial.cshtml" />
+    <Content Include="Views\Home\_AdminNotificationsPartial.cshtml" />
+    <Content Include="Views\Home\_VoterNotificationsListPartial.cshtml" />
+    <Content Include="Views\VoterCategories\Create.cshtml" />
+    <Content Include="Views\VoterCategories\Delete.cshtml" />
+    <Content Include="Views\VoterCategories\Details.cshtml" />
+    <Content Include="Views\VoterCategories\Edit.cshtml" />
+    <Content Include="Views\VoterCategories\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2707,6 +2803,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108011455003_optional-created-by-election.resx">
       <DependentUpon>202108011455003_optional-created-by-election.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108110648383_add-testfield-to-users.resx">
+      <DependentUpon>202108110648383_add-testfield-to-users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108110650040_remove-testfield-to-users.resx">
+      <DependentUpon>202108110650040_remove-testfield-to-users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108152206244_votermodel.resx">
+      <DependentUpon>202108152206244_votermodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108162202070_userotp.resx">
+      <DependentUpon>202108162202070_userotp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108170941499_notificationModel.resx">
+      <DependentUpon>202108170941499_notificationModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108170943547_notificationModel_dates.resx">
+      <DependentUpon>202108170943547_notificationModel_dates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108171002444_notificationModel_title.resx">
+      <DependentUpon>202108171002444_notificationModel_title.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108171804028_VoterCategories.resx">
+      <DependentUpon>202108171804028_VoterCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108180543151_VoterProfile.resx">
+      <DependentUpon>202108180543151_VoterProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108180733568_VoterModel-ForeignKey.resx">
+      <DependentUpon>202108180733568_VoterModel-ForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108181206305_VoterModel-UniqueUserIdEmail.resx">
+      <DependentUpon>202108181206305_VoterModel-UniqueUserIdEmail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

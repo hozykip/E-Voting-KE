@@ -1,0 +1,114 @@
+﻿@model List<E_Vote_System.Models.VoteModel>
+
+
+@{
+    E_Vote_System.Models.ElectionCandidateModel candidate = ViewBag.Candidate as E_Vote_System.Models.ElectionCandidateModel;
+
+    ViewBag.Title = "Candidate Votes";
+    ViewBag.PageTitle = "Candidate Votes";
+
+    if (candidate != null)
+    {
+        ViewBag.PageSubTitle = "Votes cast for candidate " + candidate.FullName;
+    }
+
+}
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Elections List", "Index", "Elections")
+    </li>
+
+    @if (candidate != null)
+    {
+        <li class="breadcrumb-item">
+            @Html.ActionLink("Elections Details", "Election", "Stats", new { id = candidate.ElectionPositionModel.ElectionId }, null)
+        </li>
+    }
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+
+
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title</h5>
+
+        <span>All @ViewBag.Title</span>
+        <div class="card-header-right">
+
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+
+        @if (Model != null && Model.ToList().Count > 0)
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover data-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Voter Name
+                            </th>
+                            <th>
+                                Voter Email
+                            </th>
+                            <th>
+                                Candidate
+                            </th>
+                            <th>
+                                Date Voted
+                            </th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="delete_ancestor">
+                                <td>
+                                    #
+                                </td>
+                                <td>
+                                    @item.Voter.FullName
+                                </td>
+                                <td>
+                                    @item.Voter.Email
+                                </td>
+                                <td>
+                                    <h6>@item.Candidate.FullName</h6>
+                                </td>
+                                <td>
+                                    @Utils.FormatDate(item.DateCreated)
+                                </td>
+                                
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">No @ViewBag.Title</div>
+        }
+
+    </div>
+</div>

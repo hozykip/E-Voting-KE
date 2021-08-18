@@ -25,7 +25,7 @@
                 </div>
             </div>
             <a href="index.html">
-                <img class="img-fluid" src="/Content/imgs/logo.png" alt="Theme-Logo" />
+                <img class="img-fluid" src="/Content/imgs/logo.png" alt="Theme-Logo" style="max-height: 55px" />
             </a>
             <a class="mobile-options waves-effect waves-light">
                 <i class="ti-more"></i>
@@ -136,11 +136,11 @@
                         @if (Request.IsAuthenticated)
                         {
 
-                            <li class="waves-effect waves-light">
+                            @*<li class="waves-effect waves-light">
                                 <a href="@Url.Action("Profile","Account")">
                                     <i class="ti-user"></i> Profile
                                 </a>
-                            </li>
+                            </li>*@
 
                             <li class="waves-effect waves-light">
                                 @*<a href="auth-normal-sign-in.html">

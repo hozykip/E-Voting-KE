@@ -1,0 +1,61 @@
+﻿@model List<E_Vote_System.Models.ApplicationUser>
+
+
+<div class="col-xl-6 col-md-12">
+    <div class="card table-card">
+        <div class="card-header">
+            <h5>Portal Administrators</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <div class="table-responsive">
+
+                @if (Model != null)
+                {
+                    <table class="table table-hover m-b-0 without-header">
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-inline-block align-middle">
+                                            @*<img src="assets/images/avatar-4.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">*@
+                                            <i class="fa fa-user-circle-o fa-2x m-r-15 align-top"></i>
+                                            <div class="d-inline-block">
+                                                <h6>@item.FullName</h6>
+                                                <p class="text-muted m-b-0">@item.Address</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <h6 class="f-w-700">@Utils.FormatDate(item.DateCreated)<i class="fas fa-calendar-check-o text-c-green m-l-10"></i></h6>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                }
+                else
+                {
+                    <div class="alert alert-danger col-md-12">Unable to fetch administrators</div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        toastrAlert("@ViewBag.Message");
+    </script>
+}

@@ -1,5 +1,5 @@
 ﻿@using E_Vote_System.Models
-@model E_Vote_System.Models.RegisterViewModel
+@model E_Vote_System.Models.RegisterViewModelStart
 @{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_MaterialableLogin.cshtml";
@@ -15,124 +15,75 @@
     </style>
 }
 
-@if (Model != null)
-{
-    using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "md-float-material form-material", role = "form", @id = "RegistrationForm" }))
+<div class="reg_form_container">
+    @if (Model != null)
     {
+        using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "md-float-material form-material RegistrationForm", role = "form", @id = "RegistrationForm_start3" @*, onsubmit= "return submitRegForm(this);"*@ }))
+        {
 
-        <div class="form-group">
-            @Html.AntiForgeryToken()
-        </div>
-
-
-
-        <div class="text-center">
-            <img src="/Content/imgs/logo.png" alt="logo.png">
-        </div>
-        <div class="auth-box card">
-
-            <div class="card-block">
-                <div class="row m-b-20">
-                    <div class="col-md-12">
-                        <h3 class="text-center text-uppercase">Register Account</h3>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.FirstName, new { @class = "float-label" })
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.LastName, new { @class = "float-label" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.Email, new { @class = "float-label" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.PhoneNumber, new { @class = "float-label" })
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.Address, new { @class = "float-label" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.Password, new { @class = "float-label" })
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group form-primary">
-                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
-                            <span class="form-bar"></span>
-                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "float-label" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col d-flex justify-content-end">
-                        <button class="btn btn-danger">Register</button>
-                    </div>                    
-                </div>
-
-
-                <hr />
-                <div class="row">
-                    <div class="col-md-10">
-                        <p class="text-inverse text-left m-b-0">Thank you.</p>
-                        <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p>
-                    </div>
-                    <div class="col-md-2">
-                        <img src="/Content/Materialable/assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
-                    </div>
-                </div>
-
-
+            <div class="form-group">
+                @Html.AntiForgeryToken()
             </div>
 
-        </div>
-    }
 
-}
+
+            <div class="text-center">
+                <img src="/Content/imgs/logo.png" alt="logo.png">
+            </div>
+            <div class="auth-box card">
+
+                <div class="card-block">
+                    <div class="row m-b-20">
+                        <div class="col-md-12">
+                            <h3 class="text-center text-uppercase">Register Account</h3>
+                            <p>Please enter your registered Email Address.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group form-primary">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control frm_input" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                <span class="form-bar"></span>
+                                @Html.LabelFor(m => m.Email, new { @class = "float-label" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <button class="btn btn-danger">Register</button>
+                        </div>
+                    </div>
+
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-10">
+                            <p class="text-inverse text-left m-b-0">Thank you.</p>
+                            <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p>
+                        </div>
+                        <div class="col-md-2">
+                            <img src="/Content/Materialable/assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        }
+
+    }
+</div>
+
+
 
 
 
@@ -143,53 +94,56 @@
 
 @section Scripts{
     <script>
-        let branchElement = $("#BranchCode");
-        let bankElement = $("#BankCode");
 
-        let allBranches = $("#all_branches").data("branches");
+        function submitRegForm(e) {
 
+            alert('submittting this');
 
-        bankElement.on("change", function () {
-            filterBranches();
-        });
-
-        filterBranches();
-
-        function filterBranches() {
-
-            let currentBank = bankElement.val();
-
-            const branches = allBranches.filter(b => b.Bank_Code == currentBank);
-
-
-            branchElement.empty();
-
-            branches.forEach(function (e, k) {
-                let option = `<option value="${e.Branch_Code}">${e.Branch_Name}</option>`;
-
-                branchElement.append(option);
-            });
-
+            return false;
         }
 
 
-
-        $("#RegistrationForm").validate({
+        @*$('.RegistrationForm').on('submit',  function (e) {
+            e.preventDefault();
+        }).validate({
             submitHandler: function (form) {
-                form.submit();
-                @*$.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        console.log(response);
 
-                        form[0].reset();
+                $(form).submit();*@
+
+                @*let url = $(form).attr('action');
+
+                let id = $(form).attr('id');
+
+                let fd = new FormData();
+
+                $(form).find('.frm_input').each(function (i, e) {
+                    fd.append($(e).attr('name'), $(e).val())
+                });
+
+                $.ajax({
+                    url,
+                    method: 'POST',
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+                        $('.reg_form_container').html(res);
+
+                        $('.RegistrationForm').removeData('validator');
+                        $('.RegistrationForm').removeData('unobtrusiveValidation');
+                        $.validator.unobtrusive.parse('.RegistrationForm');
+                    },
+                    error: function (err) {
+                        let error = GenerateToastError(err.statusText);
+
+                        toastrAlert(error);
                     }
                 })*@
-            }
-        });
+            @*}
+        });*@
 
+        
     </script>
 }
 

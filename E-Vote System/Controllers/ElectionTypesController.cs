@@ -86,6 +86,11 @@ namespace E_Vote_System.Controllers
             {
                 ElectionTypes electionTypes = await db.ElectionTypes.FindAsync(id);
 
+                if (electionTypes == null)
+                {
+                    return HttpNotFound();
+                }
+
                 model = new ElectionTypesEditViewModel
                 {
                     Id = id.Value,
@@ -93,10 +98,7 @@ namespace E_Vote_System.Controllers
                     Description = electionTypes.Description
                 };
 
-                if (electionTypes == null)
-                {
-                    return HttpNotFound();
-                }
+                
             }
             catch(Exception e)
             {
@@ -123,14 +125,23 @@ namespace E_Vote_System.Controllers
                 {
                     ElectionTypes electionTypes = await db.ElectionTypes.FindAsync(model.Id);
 
-                    electionTypes.Type = model.Type;
-                    electionTypes.Description = model.Description;
-                    electionTypes.DateModified = DateTime.Now;
+                    if(electionTypes == null)
+                    {
+                        TempData["Message"] = Utils.GenerateToastError($"Election type not found", "Edit Election Type");
+                    }
+                    else
+                    {
+                        electionTypes.Type = model.Type;
+                        electionTypes.Description = model.Description;
+                        electionTypes.DateModified = DateTime.Now;
 
-                    db.Entry(electionTypes).State = EntityState.Modified;
-                    await db.SaveChangesAsync();
-                    TempData["Message"] = Utils.GenerateToastSuccess($"Election type updated successfully", "Edit Election Type");
-                    return RedirectToAction("Index");
+                        db.Entry(electionTypes).State = EntityState.Modified;
+                        await db.SaveChangesAsync();
+                        TempData["Message"] = Utils.GenerateToastSuccess($"Election type updated successfully", "Edit Election Type");
+                        return RedirectToAction("Index");
+                    }
+
+                    
                 }
                 
             }

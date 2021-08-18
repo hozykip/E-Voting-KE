@@ -48,6 +48,9 @@
                                 @Html.DisplayNameFor(model => model.Type.Type)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.VoterCategory.Name)
+                            </th>
+                            <th>
                                 Created By
                             </th>
                             <th>
@@ -77,6 +80,9 @@
                                 @Html.DisplayFor(modelItem => item.Type.Type)
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.VoterCategory.Name)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Creator.FullName)
                             </td>
                             <td>
@@ -94,6 +100,7 @@
                             <td>
                                 <a href="@Url.Action("Edit", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-edit"></i> Edit</a>
                                 <a href="@Url.Action("Index", "ElectionPositionModels", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-list-alt"></i> Positions</a>
+                                <a href="@Url.Action("Election","Stats", new { id = item.Id })" class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-chart-area"></i> Details</a>
                                 <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger mb-2 delete_ajax"><i class="fa fa-trash"></i> Delete</a>
                             </td>
                         </tr>

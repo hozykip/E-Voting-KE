@@ -13,6 +13,8 @@ namespace E_Vote_System
     public class Utils
     {
 
+
+
         private static ApplicationDbContext dc = new ApplicationDbContext();
         private static string ToastSeparator = Configs.ToastSeparator;
 
@@ -20,6 +22,30 @@ namespace E_Vote_System
         {
             using (ApplicationDbContext applicationDbContext = new ApplicationDbContext())
                 return applicationDbContext.Users.Where<ApplicationUser>((Expression<Func<ApplicationUser, bool>>)(x => x.UserName == HttpContext.Current.User.Identity.Name)).FirstOrDefault<ApplicationUser>();
+        }
+
+        
+        public static VoterModel GetCurrentVoter()
+        {
+            try
+            {
+
+                ApplicationUser user = GetCurrentUser();
+
+                if (user == null) return null;
+
+                using(ApplicationDbContext dbContext = new ApplicationDbContext())
+                {
+                    VoterModel voterModel = dbContext.VoterModels.FirstOrDefault(y => y.UserId == user.Id);
+
+                    return voterModel;
+                }
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+            }
+            return null;
         }
 
 
@@ -261,6 +287,39 @@ namespace E_Vote_System
             return output;
         }
 
+        public static string FormatDate(string date)
+        {
+
+            try
+            {
+                return Convert.ToDateTime(date).ToString("dd MMM, yyyy hh:mm tt");
+            }
+            catch (Exception e)
+            {
+                return date;
+            }
+
+
+        }
+
+        public static string FormatDate(DateTime? date)
+        {
+
+            try
+            {
+                if (!date.HasValue)
+                {
+                    return "";
+                }
+
+                return date.Value.ToString("dd MMM, yyyy hh:mm tt");
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+
+        }
 
         private static string formatDisplayDateTimeLocal(DateTime date)
         {
@@ -280,5 +339,37 @@ namespace E_Vote_System
             return output;
         }
 
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+
+        public static bool CreateFolderIfNotExists(string path)
+        {
+            bool flag = false;
+
+            try
+            {
+
+                if (System.IO.Directory.Exists(path))
+                {
+                    return true;
+                }
+
+                DirectoryInfo directoryInfo = System.IO.Directory.CreateDirectory(path);
+
+                return directoryInfo.Exists;
+
+            }catch(Exception e)
+            {
+                LogException(e);
+            }
+
+            return flag;
+        }
     }
 }

@@ -1,0 +1,51 @@
+﻿@model E_Vote_System.Models.ElectionCandidateModel
+
+
+@{
+    List<E_Vote_System.Models.VoteModel> votes = ViewBag.Votes as List<E_Vote_System.Models.VoteModel>;
+
+    bool votedCandidate = false;
+    bool votedPosition = false;
+
+    if (votes != null)
+    {
+        votedCandidate = votes.Any(v => v.CandidateId == Model.Id);
+
+        votedPosition = votes.Any(v => v.Candidate.PositionId == Model.PositionId);
+    }
+}
+
+<div class="col-4 p-3 mb-3">
+
+    <div class="border text-center @(votedCandidate ? "border-success" : "")">
+
+        @{
+            string profilePath = $"{Configs.DocumentsUrl}/{Model.ProfilePicture}";
+            string manifestoPath = $"{Configs.DocumentsUrl}/{Model.ManifestoFile}";
+        }
+
+        <img src="@profilePath" alt="" class="img w-100 mb-1" style="height: 230px;" />
+
+        <h5 class="text-center">@Model.SurName @Model.FirstName @Model.OtherName</h5>
+        <p>@Model.EmailAddress</p>
+        <p>@Model.PhoneNumber</p>
+        <p>
+            <a href="@manifestoPath" target="_blank" class="btn btn-sm btn-round btn-danger bg-c-red text-white font-weight-bold">Manifesto</a>
+        </p>
+
+        @if (votedCandidate) { 
+            <span class="btn btn-sm rounded btn-outline-success font-weight-bold mt-1 mb-3">
+                <i class="la la-check-circle-o" style="font-size: 1.1rem"></i> Selected
+            </span>
+        }
+
+        @if (!votedPosition)
+        {
+            <div class="mt-1 mb-3 d-flex justify-content-center">
+                <input type="radio" title="Vote for @Model.SurName" name="CandidateId" value="@Model.Id" class="form-control frm_input" style="cursor: pointer; outline: none" />
+            </div>
+        }
+
+    </div>
+
+</div>

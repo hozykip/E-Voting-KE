@@ -1,0 +1,185 @@
+﻿@model E_Vote_System.Models.ElectionModel
+
+
+
+@{
+    ViewBag.Title = "Election Details";
+    ViewBag.PageTitle = "Election Details";
+    ViewBag.PageSubTitle = "Voting analysis";
+}
+
+@section BreadCrumbs{
+
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Dashboard", "Dashboard", "Home")
+    </li>
+    <li class="breadcrumb-item">
+        @Html.ActionLink("Elections List", "Index", "Elections")
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">@ViewBag.Title</a>
+    </li>
+}
+
+
+@if (Model != null)
+{
+
+    foreach (var position in Model.ElectionPositionModels)
+    {
+
+        <div class="card">
+            <div class="my-2">
+
+                <div class="mb-1 row">
+
+                    <div class="col-md-6">
+                        @Html.Action("PositionChartPartial", new { position_id = position.Id })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.Action("PositionDetailsPartial", new { position_id = position.Id })
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="mb-1 row px-3">
+
+                    <div class="col-md-12">
+                        @Html.Action("CandidateVotesPartial", new { position_id = position.Id })
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+    }
+
+}
+
+
+
+@*<div class="card">
+        <div class="card-header">
+            <h5>@ViewBag.Title</h5>
+
+            <span>All @ViewBag.Title</span>
+            <div class="card-header-right">
+
+
+                <a href="@Url.Action("Create", new { id = ViewBag.PositionId })" class="btn btn-success btn-sm" title="Add position candidate"><i class="fa fa-plus-circle text-white"></i> New Candidate</a>
+
+
+            </div>
+        </div>
+
+
+    </div>*@
+
+
+@section Styles{
+    <style>
+        .position_chart {
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+}
+
+
+@section Scripts{
+    <script>
+
+
+        am4core.addLicense("ch-custom-attribution");
+
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+
+
+            $(".position_chart").each(function (i, e) {
+
+                // Create chart instance
+                var chart = am4core.create($(e).attr("id"), am4charts.PieChart);
+                chart.startAngle = 160;
+                chart.endAngle = 380;
+
+
+                // Let's cut a hole in our Pie chart the size of 40% the radius
+                chart.innerRadius = am4core.percent(40);
+
+                // Add data
+                chart.data = generateChartData($(e));
+
+                //enable tooltip
+                var title = chart.titles.create();
+                title.text = "Vote Distribution Chart";
+                title.fontSize = 18;
+                title.tooltipText = "Votes distribution";
+
+                //chart.cursor = new am4charts.XYCursor();
+
+
+                // Create series
+                var series = chart.series.push(new am4charts.PieSeries());
+                series.dataFields.value = "votes";
+                series.dataFields.category = "candidate";
+
+                series.slices.template.stroke = new am4core.InterfaceColorSet().getFor("background");
+                series.slices.template.strokeWidth = 1;
+                series.slices.template.strokeOpacity = 1;
+                series.slices.template.states.getKey("hover").properties.shiftRadius = 0.05;
+                series.slices.template.states.getKey("hover").properties.scale = 1;
+
+                series.slices.template.propertyFields.fill = "color";
+
+                series.labels.template.disabled = true;
+                series.ticks.template.disabled = true;
+
+                var label = chart.seriesContainer.createChild(am4core.Label);
+                label.textAlign = "middle";
+                label.horizontalCenter = "middle";
+                label.verticalCenter = "middle";
+                label.adapter.add("text", function (text, target) {
+                    return "[font-size:18px]total[/]:\n[bold font-size:30px]" + series.dataItem.values.value.sum + "[/]";
+                })
+
+            });
+
+
+
+
+            // add range
+
+
+
+
+        }); // end am4core.ready()
+
+        function generateChartData(elem) {
+            var chartData = [];
+
+            let labels = $(elem).data("labels").split(",");
+            let series = $(elem).data("series").split(",");
+
+            labels.forEach(function (item, index) {
+                chartData.push({
+                    candidate: item,
+                    votes: series[index],
+                    color: am4core.color(chartColors[index])
+                });
+            })
+
+            return chartData;
+        }
+    </script>
+}
+

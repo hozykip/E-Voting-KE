@@ -1,13 +1,20 @@
 ﻿<nav class="pcoded-navbar">
     <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
     <div class="pcoded-inner-navbar main-menu">
-        
+
         @Html.Action("SideBarPartial", "Home")
-        
-        
-        
-        @Html.Partial("_ActiveApplicationsMenus")
-        
+
+        @if (User.IsInRole("Administrator"))
+        {
+            @Html.Partial("_SideBarAdminPartial", "Home")
+        }
+        @if (User.IsInRole("Voter"))
+        {
+            @Html.Partial("_SideBarVoterPartial", "Home")
+        }
+
+        @*@Html.Partial("_ActiveApplicationsMenus")*@
+
 
 
 
