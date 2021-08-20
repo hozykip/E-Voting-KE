@@ -51,6 +51,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -74,6 +80,7 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -206,6 +213,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper_Code\Common\AllowFileSizeAttribute.cs" />
+    <Compile Include="Helper_Code\Common\CommonMethod.cs" />
+    <Compile Include="Hubs\ElectionsHub.cs" />
     <Compile Include="Migrations\202107241315537_Init.cs" />
     <Compile Include="Migrations\202107241315537_Init.Designer.cs">
       <DependentUpon>202107241315537_Init.cs</DependentUpon>
@@ -328,6 +337,7 @@
     <Compile Include="Models\ViewModels\ElectionPositionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\ElectionTypesViewModels.cs" />
     <Compile Include="Models\ViewModels\VoterCategoryViewModel.cs" />
+    <Compile Include="Models\ViewModels\VoteResultModel.cs" />
     <Compile Include="Models\ViewModels\VoterModelEditViewModel.cs" />
     <Compile Include="Models\ViewModels\VoterModelViewModel.cs" />
     <Compile Include="Models\VoteModel.cs" />
@@ -2621,6 +2631,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.2.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.2.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -2741,6 +2753,10 @@
     <Content Include="Views\VoterCategories\Details.cshtml" />
     <Content Include="Views\VoterCategories\Edit.cshtml" />
     <Content Include="Views\VoterCategories\Index.cshtml" />
+    <Content Include="Views\Elections\Results.cshtml" />
+    <Content Include="Views\Elections\_SinglePosition.cshtml" />
+    <Content Include="Views\Elections\_PositionCandidates.cshtml" />
+    <Content Include="Views\Elections\_PositionChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

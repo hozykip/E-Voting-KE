@@ -14,6 +14,8 @@ namespace E_Vote_System
         public void Configuration(IAppBuilder app)
         {
 
+            app.MapSignalR();
+
             var services = new ServiceCollection();
 
 

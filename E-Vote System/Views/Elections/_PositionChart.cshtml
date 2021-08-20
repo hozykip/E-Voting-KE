@@ -1,0 +1,43 @@
+﻿@model List<E_Vote_System.Models.ElectionCandidateModel>
+@{
+
+    int positionId = ViewBag.PositionId;
+
+    string candidateNames = string.Empty;
+    string candidateIds = string.Empty;
+}
+<style>
+    .chartdiv {
+        height: 400px;
+    }
+</style>
+
+
+@if (Model != null)
+{
+
+
+
+    foreach (var candidate in Model)
+    {
+        candidateNames += $"({candidate.Id}){candidate.SurName},";
+        candidateIds += $"{candidate.Id},";
+    }
+
+    candidateIds = candidateIds.TrimEnd(',');
+    candidateNames = candidateNames.TrimEnd(',');
+
+}
+
+
+
+<div class="col-md-12 mx-3 mr-5">
+    <div class="chartdiv border" 
+         id="chartdiv_@positionId"
+         data-position-id="@positionId" 
+         data-candidate-names="@candidateNames" 
+         data-candidate-ids="@candidateIds" ></div>
+</div>
+
+
+

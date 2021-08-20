@@ -147,3 +147,9 @@ D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.V
 D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterProfile.resources
 D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterModelForeignKey.resources
 D:\Backup\Works\E-Vote System\E-Vote System\obj\Debug\E_Vote_System.Migrations.VoterModelUniqueUserIdEmail.resources
+D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.AspNet.SignalR.Core.pdb
+D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.AspNet.SignalR.SystemWeb.pdb
+D:\Backup\Works\E-Vote System\E-Vote System\bin\Microsoft.AspNet.SignalR.SystemWeb.xml

@@ -114,6 +114,7 @@
                                     {
                                         <a href="@Url.Action("Cast", "VoterElections", new { id = item.Id })" class=" btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fa fa-send"></i> Vote</a>
                                     }
+                                    <a href="@Url.Action("Results","Elections", new { id = item.Id })" class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-bar-chart-o"></i> Live Results</a>
                                     <a href="@Url.Action("Election","Stats", new { id = item.Id })" class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-chart-area"></i> Details</a>
                                     @*<a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger mb-2 delete_ajax"><i class="fa fa-trash"></i> Details</a>*@
                                 </td>

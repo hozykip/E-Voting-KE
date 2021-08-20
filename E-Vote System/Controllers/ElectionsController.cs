@@ -12,12 +12,14 @@ using E_Vote_System.Models.ViewModels;
 
 namespace E_Vote_System.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    
+    [Authorize(Roles = "Administrator,Voter")]
     public class ElectionsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Elections
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Index()
         {
             var electionModels = db.ElectionModels.Include(e => e.Creator).Include(e => e.Type).Include(e => e.VoterCategory);
@@ -25,6 +27,7 @@ namespace E_Vote_System.Controllers
         }
 
         // GET: Elections/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,6 +43,7 @@ namespace E_Vote_System.Controllers
         }
 
         // GET: Elections/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             ViewBag.CreatedBy = new SelectList(db.Users, "Id", "FirstName");
@@ -53,6 +57,7 @@ namespace E_Vote_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Create([Bind(Include = "Id,TypeId,VoterCategoryId,CreatedBy,Name,StartDate,EndDate,DateCreated,DateModified")] ElectionModel electionModel)
         {           
 
@@ -90,6 +95,7 @@ namespace E_Vote_System.Controllers
         }
 
         // GET: Elections/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -137,6 +143,7 @@ namespace E_Vote_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Edit([Bind(Include = "Id,TypeId,CreatedBy,Name,StartDate,EndDate,DateCreated,DateModified,VoterCategoryId")] ElectionEditViewModel model, FormCollection form)
         {
             try
@@ -187,6 +194,7 @@ namespace E_Vote_System.Controllers
         }
 
         // GET: Elections/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -200,9 +208,71 @@ namespace E_Vote_System.Controllers
             }
             return View(electionModel);
         }
+        
+        [Authorize(Roles = "Administrator,Voter")]
+        public async Task<ActionResult> Results(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ElectionModel electionModel = null;
+            try
+            {
+                electionModel = await db.ElectionModels.Include(e => e.ElectionPositionModels).FirstOrDefaultAsync(e => e.Id == id);
+                if (electionModel == null)
+                {
+                    return HttpNotFound();
+                }
+            }
+            catch(Exception e)
+            {
+                Utils.LogException(e);
+                TempData["Message"] = Utils.GenerateToastError(e.Message);
+            }
+
+            return View(electionModel);
+        }
+
+        [Authorize(Roles = "Administrator,Voter")]
+        public ActionResult PositionCandidates(int PositionId)
+        {
+            List<ElectionCandidateModel> candidateModels = null;
+            try
+            {
+                candidateModels = db.ElectionCandidateModels.Where(c => c.PositionId == PositionId).ToList();
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+                //ViewBag.Message = Utils.GenerateToastError(e);
+            }
+
+            return PartialView("_PositionCandidates", candidateModels);
+        }
+
+        [Authorize(Roles = "Administrator,Voter")]
+        public ActionResult PositionChart(int PositionId)
+        {
+            ViewBag.PositionId = PositionId;
+            List<ElectionCandidateModel> candidateModels = null;
+            try
+            {
+                candidateModels = db.ElectionCandidateModels.Where(c => c.PositionId == PositionId).ToList();
+
+            }catch(Exception e)
+            {
+                Utils.LogException(e);
+                //ViewBag.Message = Utils.GenerateToastError(e);
+            }
+
+            return PartialView("_PositionChart", candidateModels);
+        }
 
         // POST: Elections/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             DefaultJsonResponse response = new DefaultJsonResponse
@@ -228,6 +298,7 @@ namespace E_Vote_System.Controllers
             return Json(response);
 
         }
+
 
         protected override void Dispose(bool disposing)
         {

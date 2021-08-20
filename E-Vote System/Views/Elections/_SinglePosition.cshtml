@@ -1,0 +1,27 @@
+﻿@model E_Vote_System.Models.ElectionPositionModel
+
+<div class="row">
+
+    <div class="col-md-12 py-2">
+        <h4 class="text-uppercase text-behance">@Model.Position</h4>
+    </div>
+
+    <div class="col-md-6 pr-3">
+
+        <div class="row">
+            @Html.Action("PositionChart", new { PositionId = Model.Id })
+        </div>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <div class="row">
+            @Html.Action("PositionCandidates", new { PositionId = Model.Id })
+        </div>
+
+    </div>
+
+</div>
+

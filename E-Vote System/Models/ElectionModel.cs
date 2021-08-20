@@ -43,5 +43,9 @@ namespace E_Vote_System.Models
 
         public List<ElectionPositionModel> ElectionPositionModels { get; set; }
         public VoterCategoryModel VoterCategory { get; set; }
+
+        public bool IsOnGoing { get { return this.StartDate <= DateTime.Now && this.EndDate >= DateTime.Now; } }
+        public bool IsClosed { get { return this.EndDate < DateTime.Now; } }
+        public bool IsUpcoming { get { return this.StartDate > DateTime.Now; } }
     }
 }
